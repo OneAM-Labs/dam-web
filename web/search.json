@@ -1,0 +1,215 @@
+{
+  "version": "0.5.0",
+  "generated_for": "DAM — Project Continuity Platform",
+  "base_url": "https://dam-pcp.web.app",
+  "index": [
+    {
+      "id": "introduction",
+      "title": "Introduction",
+      "section": "Introduction",
+      "category": "concept",
+      "url": "/docs#introduction",
+      "content": "DAM is a modern developer platform that evolved from a Version Control System (VCS) into a comprehensive Project Continuity Platform (PCP). Beyond Version Control Traditional systems ask: \"What changed?\" DAM asks: \"How can this project be preserved, understood, recreated, and continued anywhere?\" Version control is just one component of continuity."
+    },
+    {
+      "id": "philosophy",
+      "title": "Philosophy",
+      "section": "Philosophy",
+      "category": "concept",
+      "url": "/docs#philosophy",
+      "content": "DAM approaches project management as critical infrastructure, using terminology inspired by water control systems. A real dam quietly, reliably controls enormous amounts of water. DAM reliably handles your project state. Instead of patching disjointed tools together, DAM unifies version history, collection rules, environment metadata, and project setup into a single Reservoir."
+    },
+    {
+      "id": "vocabulary",
+      "title": "Core Vocabulary",
+      "section": "Core Vocabulary",
+      "category": "concept",
+      "url": "/vocabulary",
+      "content": "DAM is not built on top of Git, and its terms aren't a reskin of Git's — they describe DAM's own model of a project's continuity. If a word below reminds you of something from another VCS, that's coincidental; treat this as the primary definition."
+    },
+    {
+      "id": "quickstart",
+      "title": "Quick Start",
+      "section": "Quick Start",
+      "category": "concept",
+      "url": "/docs#quickstart",
+      "content": "Begin managing project continuity in seconds."
+    },
+    {
+      "id": "purities",
+      "title": ".purities & .impurities",
+      "section": ".purities & .impurities",
+      "category": "concept",
+      "url": "/purities",
+      "content": "DAM introduces two complementary tracking systems to replace error-prone exclusion lists. These are plain-text rule files placed anywhere in your project folder tree, using patterns similar to .gitignore syntax. Lines starting with # are comments. .purities: Acts as a strict allowlist. If a directory contains this file, it enters strict allow mode — only files matching its patterns (within that folder) are tracked."
+    },
+    {
+      "id": "profiles",
+      "title": "Project Profiles (dam.toml)",
+      "section": "Project Profiles (dam.toml)",
+      "category": "concept",
+      "url": "/profiles",
+      "content": "For full project exports (as opposed to single seal exports), DAM uses a dam.toml configuration file in your project root. This one file is what lets a single command — dam export project — package not just your files, but everything needed to get the project running again somewhere else. It defines: Project info — name and provider type. Setup commands — instructions to run after importing."
+    },
+    {
+      "id": "github-integration",
+      "title": "GitHub Integration",
+      "section": "GitHub Integration",
+      "category": "concept",
+      "url": "/github",
+      "content": "DAM can target a GitHub repository as a cloud remote. Once configured, dam sync pushes your seal history, stream metadata, and workspace file objects. Local streams map natively to GitHub branches. Authentication uses OS Keychain or an AES-256-GCM encrypted local vault, completely avoiding plain-text tokens."
+    },
+    {
+      "id": "dam-source",
+      "title": "dam source",
+      "section": "Command Reference",
+      "category": "command",
+      "url": "/source",
+      "content": "Initializes a brand-new reservoir in the current directory, or upgrades an existing one. dam source [--name <NAME>] [--upgrade] --name, -n — Skip the name prompt. --upgrade — Migrate an existing reservoir and securely convert legacy plain text credentials."
+    },
+    {
+      "id": "dam-collect",
+      "title": "dam collect",
+      "section": "Command Reference",
+      "category": "command",
+      "url": "/collect",
+      "content": "Scans a folder (or single file) and adds matching items to your collection, ready to be sealed. dam collect <PATH> [--override-purities [FILE]] [--override-impurities [FILE]] [--rule-priority <purities|impurities>]"
+    },
+    {
+      "id": "dam-creds",
+      "title": "dam creds",
+      "section": "Command Reference",
+      "category": "command",
+      "url": "/creds",
+      "content": "Securely stores, lists, and deletes credentials using your operating system's keychain or an encrypted local vault. Supports Fine-Grained Tokens, Classic Tokens, SSH Keys, and Generic Secrets via dam creds create."
+    },
+    {
+      "id": "dam-inspect",
+      "title": "dam inspect",
+      "section": "Command Reference",
+      "category": "command",
+      "url": "/inspect",
+      "content": "Your dashboard for seeing the current state of the reservoir. dam inspect [--rules] [<TARGET>] By default — shows the currently active stream and all files sitting in the collection area. With --rules — a complete map of every .purities and .impurities file found in your project."
+    },
+    {
+      "id": "dam-drain",
+      "title": "dam drain",
+      "section": "Command Reference",
+      "category": "command",
+      "url": "/drain",
+      "content": "Empties a specific part of your reservoir. dam drain <TARGET> collection — Clears the collection area back to empty. This does not touch your actual workspace files or any sealed history."
+    },
+    {
+      "id": "dam-seal",
+      "title": "dam seal",
+      "section": "Command Reference",
+      "category": "command",
+      "url": "/seal",
+      "content": "Creates a permanent snapshot from everything currently in the collection area — the equivalent of a commit. dam seal \"<MESSAGE>\" dam seal --list <N> A seal records the exact content of every staged file, your message, and a timestamp. After sealing, the collection area automatically empties."
+    },
+    {
+      "id": "dam-timeline",
+      "title": "dam timeline",
+      "section": "Command Reference",
+      "category": "command",
+      "url": "/timeline",
+      "content": "Prints chronological history of seals on your current stream. Supports visual rendering with dam timeline --graph which outputs a beautifully structured ASCII Directed Acyclic Graph (DAG) displaying parallel branches and merges."
+    },
+    {
+      "id": "dam-stream",
+      "title": "dam stream",
+      "section": "Command Reference",
+      "category": "command",
+      "url": "/stream",
+      "content": "Manages parallel development streams (the DAM equivalent of branches). Supports subcommands including create, inspect, goal, notes, description, target, and delete. Streams now contain rich metadata: owners, priorities, targets, status indicators, and numbered goals."
+    },
+    {
+      "id": "dam-flowinto",
+      "title": "dam flowinto",
+      "section": "Command Reference",
+      "category": "command",
+      "url": "/flowinto",
+      "content": "Switches your active stream context — the DAM equivalent of checking out a branch. dam flowinto <NAME>. If unstaged, unsealed changes exist in your workspace, DAM will safely prompt you to make a temporary Continuity Snapshot (Seal) before switching."
+    },
+    {
+      "id": "dam-merge",
+      "title": "dam merge",
+      "section": "Command Reference",
+      "category": "command",
+      "url": "/merge",
+      "content": "[Experimental, not suggested for production workflow yet] Merges another stream's seals and objects into the active stream using a smart 3-way conflict resolution engine. Climbs the lineage to find the closest common ancestor (Base Seal) and creates a multi-parent merge seal upon execution."
+    },
+    {
+      "id": "dam-apply",
+      "title": "dam apply",
+      "section": "Command Reference",
+      "category": "command",
+      "url": "/apply",
+      "content": "Restores your workspace files to exactly match a previously sealed snapshot. dam apply <SEAL_ID> [--preview] Preview maps out affected paths on screen without performing disk modifications."
+    },
+    {
+      "id": "dam-sync",
+      "title": "dam sync",
+      "section": "Command Reference",
+      "category": "command",
+      "url": "/sync",
+      "content": "Pushes or pulls your seal history, stream metadata, and object blobs to and from a linked cloud platform (GitHub by default). Utilizes credential manager aliases securely, resolving interactive ahead/behind diffs safely."
+    },
+    {
+      "id": "dam-export",
+      "title": "dam export",
+      "section": "Command Reference",
+      "category": "command",
+      "url": "/export",
+      "content": "Packages your project for sharing. Supports exporting a single seal snapshot as a compact .seal bundle or raw .zip file, or exporting a full portable .dam project with setup commands and environment checking profiles."
+    },
+    {
+      "id": "dam-import",
+      "title": "dam import",
+      "section": "Command Reference",
+      "category": "command",
+      "url": "/import",
+      "content": "Imports a previously exported archive back into a reservoir. Supports .seal bundles, raw .zip archives, and full .dam project archives. Verifies system environment requirements matching declared provider types on import."
+    },
+    {
+      "id": "dam-settings",
+      "title": "dam settings",
+      "section": "Command Reference",
+      "category": "command",
+      "url": "/settings",
+      "content": "View or change your reservoir's configuration. Supports interactive settings dashboard via dam settings --interactive. Configures project names, conflict priorities, and other local behaviors (Note: github_token_path setting is removed)."
+    },
+    {
+      "id": "dam-destroy",
+      "title": "dam destroy",
+      "section": "Command Reference",
+      "category": "command",
+      "url": "/destroy",
+      "content": "Permanently removes — or safely archives — your entire reservoir. Renames reservoir directory to a backup directory when using the --archive flag."
+    },
+    {
+      "id": "workflows",
+      "title": "Common Workflows",
+      "section": "Common Workflows",
+      "category": "guide",
+      "url": "/workflows",
+      "content": "Recipes for starting reservoirs, configuring custom purities checklists, managing parallel stream feature-testing, performing 3-way stream merges, and distributing projects."
+    },
+    {
+      "id": "faq",
+      "title": "FAQ",
+      "section": "FAQ",
+      "category": "guide",
+      "url": "/faq",
+      "content": "Answers on differences between seal snapshots and full project archives, automated workspace snapshotting, secure credentials, and rules conflict handling."
+    },
+    {
+      "id": "whats-new",
+      "title": "What's New",
+      "section": "What's New",
+      "category": "release-notes",
+      "url": "/whats-new",
+      "content": "v0.5.0 features: secure centralized credential manager (dam creds), OS Keychain integration, AES-256-GCM encrypted local vault, safe legacy migration pipeline, and automatic credential retrieval in dam sync."
+    }
+  ]
+}

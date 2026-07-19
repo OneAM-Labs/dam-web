@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DAM Documentation - Comprehensive guide to the Project Continuity Platform">
+    <title>Documentation - DAM</title>
+
+    <style>
+        /* Base & Reset */
+        :root {
+            --bg-base: #000000;
+            --bg-surface: #0a0a0a;
+            --bg-elevated: #111111;
+            --text-primary: #ededed;
+            --text-secondary: #a1a1aa;
+            --text-tertiary: #71717a;
+            --border-subtle: #27272a;
+            --border-hover: #3f3f46;
+            --accent: #ffffff;
+            --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-top: 0;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        ul,
+        ol {
+            color: var(--text-secondary);
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        code {
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+            background: var(--bg-elevated);
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+        }
+
+        pre {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 1.25rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-subtle);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+
+        .brand svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .btn-back {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-subtle);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-back:hover {
+            color: var(--text-primary);
+            border-color: var(--border-hover);
+            background: var(--bg-surface);
+        }
+
+        /* Docs Layout */
+        .docs-layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 6rem 1.5rem 4rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 8rem;
+            height: calc(100vh - 10rem);
+            overflow-y: auto;
+        }
+
+        .sidebar-group {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-tertiary);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .sidebar-link {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            padding: 0.4rem 0;
+            transition: color 0.2s;
+        }
+
+        .sidebar-link:hover {
+            color: var(--text-primary);
+        }
+
+        .sidebar-link.active {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Callout */
+        .callout {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-left: 3px solid var(--accent);
+            border-radius: 6px;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+        }
+
+        .callout strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .callout p {
+            margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-size: 0.875rem;
+        }
+
+        th,
+        td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        th {
+            color: var(--text-primary);
+            font-weight: 500;
+            background: var(--bg-surface);
+        }
+
+        td {
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .docs-layout {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .sidebar {
+                position: static;
+                height: auto;
+                border-bottom: 1px solid var(--border-subtle);
+                padding-bottom: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="../index_main.html" class="brand">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <path d="M3 9h18M9 21V9" />
+                </svg>
+                DAM Docs
+                <span
+                    style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.15rem 0.6rem; font-family: var(--font-mono); letter-spacing: 0;">v0.5.1</span>
+            </a>
+            <a href="../index_main.html" class="btn-back">← Back to Site</a>
+        </div>
+    </nav>
+
+    <div class="docs-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-group">
+                <span class="sidebar-title">Getting Started</span>
+                <a href="#introduction" class="sidebar-link active">Introduction</a>
+                <a href="#philosophy" class="sidebar-link">Philosophy</a>
+                <a href="#quickstart" class="sidebar-link">Quick Start</a>
+            </div>
+
+            <div class="sidebar-group">
+                <span class="sidebar-title">Core Concepts</span>
+                <a href="#vocabulary" class="sidebar-link">Core Vocabulary</a>
+                <a href="#purities" class="sidebar-link">.purities & .impurities</a>
+                <a href="#profiles" class="sidebar-link">Project Profiles (dam.toml)</a>
+                <a href="#github-integration" class="sidebar-link">GitHub Integration</a>
+            </div>
+
+            <div class="sidebar-group">
+                <span class="sidebar-title">Command Reference</span>
+                <a href="#dam-source" class="sidebar-link">dam source</a>
+                <a href="#dam-collect" class="sidebar-link">dam collect</a>
+                <a href="#dam-creds" class="sidebar-link">dam creds</a>
+                <a href="#dam-inspect" class="sidebar-link">dam inspect</a>
+                <a href="#dam-drain" class="sidebar-link">dam drain</a>
+                <a href="#dam-seal" class="sidebar-link">dam seal</a>
+                <a href="#dam-timeline" class="sidebar-link">dam timeline</a>
+                <a href="#dam-stream" class="sidebar-link">dam stream</a>
+                <a href="#dam-flowinto" class="sidebar-link">dam flowinto</a>
+                <a href="#dam-merge" class="sidebar-link">dam merge</a>
+                <a href="#dam-apply" class="sidebar-link">dam apply</a>
+                <a href="#dam-sync" class="sidebar-link">dam sync</a>
+                <a href="#dam-export" class="sidebar-link">dam export</a>
+                <a href="#dam-import" class="sidebar-link">dam import</a>
+                <a href="#dam-settings" class="sidebar-link">dam settings</a>
+                <a href="#dam-destroy" class="sidebar-link">dam destroy</a>
+                <a href="#dam-update" class="sidebar-link">dam update</a>
+            </div>
+
+            <div class="sidebar-group">
+                <span class="sidebar-title">Guides</span>
+                <a href="#workflows" class="sidebar-link">Common Workflows</a>
+                <a href="#faq" class="sidebar-link">FAQ</a>
+            </div>
+
+            <div class="sidebar-group">
+                <span class="sidebar-title">Release Notes</span>
+                <a href="#whats-new" class="sidebar-link">What's New</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main>
+            <section id="introduction">
+                <h1>Introduction</h1>
+                <p>DAM is a modern developer platform that evolved from a Version Control System (VCS) into a
+                    comprehensive Project Continuity Platform (PCP).</p>
+
+                <div class="callout">
+                    <strong>Beyond Version Control</strong>
+                    <p>Traditional systems ask: "What changed?" DAM asks: "How can this project be preserved,
+                        understood, recreated, and continued anywhere?" Version control is just one component of
+                        continuity.</p>
+                </div>
+            </section>
+
+            <section id="philosophy">
+                <h2>Philosophy</h2>
+                <p>DAM approaches project management as critical infrastructure, using terminology inspired by water
+                    control systems. A real dam quietly, reliably controls enormous amounts of water. DAM reliably
+                    handles your project state.</p>
+                <p>Instead of patching disjointed tools together, DAM unifies version history, collection rules,
+                    environment metadata, and project setup into a single <strong>Reservoir</strong>.</p>
+            </section>
+
+            <section id="vocabulary">
+                <h2>Core Vocabulary</h2>
+                <p>DAM is not built on top of Git, and its terms aren't a reskin of Git's — they describe DAM's own
+                    model of a project's continuity. If a word below reminds you of something from another VCS,
+                    that's coincidental; treat this as the primary definition.</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Term</th>
+                            <th>Definition</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Reservoir</strong></td>
+                            <td>The totality of a project's continuity: history, configuration, and state. Created the
+                                moment you run <code>dam source</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Collection</strong></td>
+                            <td>A holding pool of files you've selected to be saved in your next snapshot, governed
+                                strictly by purities rules.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Seal</strong></td>
+                            <td>An immutable, preserved historical snapshot of everything currently in your
+                                collection.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Timeline</strong></td>
+                            <td>The full chronological history of seals on your current stream.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Stream</strong></td>
+                            <td>An independent, parallel flow of development you can switch between.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Flowinto</strong></td>
+                            <td>The act of shifting your active workspace into a different Stream.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Apply</strong></td>
+                            <td>Restoring your workspace files to match a specific seal.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sync</strong></td>
+                            <td>Pushing or pulling seal history and file objects between your local reservoir and a
+                                linked cloud platform, such as GitHub.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Drain</strong></td>
+                            <td>Clearing a section of your reservoir, such as emptying the collection area.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Export</strong></td>
+                            <td>Packaging a seal or your entire project into a portable archive for sharing.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Provider</strong></td>
+                            <td>A project-type profile (Flutter, Custom, etc.) defining environment checks and setup
+                                commands for project exports.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+
+            <section id="quickstart">
+                <h2>Quick Start</h2>
+                <p>Begin managing project continuity in seconds.</p>
+
+                <h3>1. Source a Reservoir</h3>
+                <p>Navigate to your project folder and initialize a new continuity environment. This launches an
+                    interactive setup wizard for the project name, conflict resolution preference, and an optional
+                    <code>dam.toml</code> profile.
+                </p>
+                <pre><code>$ dam source
+[Success] Reservoir initialized successfully.</code></pre>
+                <p>You can also skip the prompts entirely:</p>
+                <pre><code>$ dam source --name "My Project"</code></pre>
+
+                <h3>2. Define purities</h3>
+                <p>Create a <code>.purities</code> file. DAM operates on strict allowlists by default. Only explicitly
+                    declared files or patterns are collected.</p>
+                <pre><code># .purities
+src/**
+README.md
+package.json</code></pre>
+
+                <h3>3. Collect State</h3>
+                <p>Gather your files based on the defined rules.</p>
+                <pre><code>$ dam collect .
+[Success] Collected 14 items matching purities rules.</code></pre>
+
+                <h3>4. Seal the State</h3>
+                <p>Create an immutable snapshot of your collected environment. The collection area is cleared
+                    automatically right after.</p>
+                <pre><code>$ dam seal "Established core project structure"
+[Success] seal_001 created safely.</code></pre>
+
+                <h3>5. Sync to the Cloud (optional)</h3>
+                <p>Back your reservoir up to a GitHub repository so it's safe off your machine and pullable from
+                    anywhere else.</p>
+                <pre><code>$ dam sync --action push
+✓ Successfully pushed seal snapshot to remote repository on GitHub!</code></pre>
+            </section>
+
+            <section id="purities">
+                <h2>.purities & .impurities</h2>
+                <p>DAM introduces two complementary tracking systems to replace error-prone exclusion lists. These
+                    are plain-text rule files placed anywhere in your project folder tree, using patterns similar to
+                    <code>.gitignore</code> syntax. Lines starting with <code>#</code> are comments.
+                </p>
+
+                <ul>
+                    <li><strong><code>.purities</code></strong>: Acts as a strict allowlist. If a directory contains
+                        this
+                        file, it enters strict allow mode — only files matching its patterns (within that folder and
+                        below) are ever collected.</li>
+                    <li><strong><code>.impurities</code></strong>: Acts as a blocklist, inheriting downwards. Files
+                        matching its patterns are excluded, even if otherwise eligible.</li>
+                </ul>
+
+                <p>Example <code>.impurities</code> file:</p>
+                <pre><code># Skip build artifacts and secrets
+build/
+*.log
+.env</code></pre>
+
+                <p>If a file matches both a purity and an impurity rule, that's a <strong>conflict</strong>. DAM
+                    detects the collision and resolves it based on your reservoir's settings (<code>dam
+                        settings</code>) or a one-time override via <code>dam collect --rule-priority</code>. If no
+                    priority is configured, DAM shows you the conflicting files and asks how to proceed, optionally
+                    saving your choice as a permanent preference.</p>
+            </section>
+
+            <section id="profiles">
+                <h2>Project Profiles (dam.toml)</h2>
+                <p>For full <strong>project exports</strong> (as opposed to single seal exports), DAM uses a
+                    <code>dam.toml</code> configuration file in your project root. This one file is what lets a
+                    single command — <code>dam export project</code> — package not just your files, but everything
+                    needed to get the project running again somewhere else. It defines:
+                </p>
+
+                <ul>
+                    <li><strong>Project info</strong> — name and provider type.</li>
+                    <li><strong>Setup commands</strong> — instructions to run after importing (e.g. installing
+                        dependencies).</li>
+                    <li><strong>Profiles</strong> — named sets of include/exclude file patterns, letting you create
+                        different export packages for different audiences (e.g. a <code>full</code> profile for
+                        admins, and a <code>contributor</code> profile that excludes sensitive files like
+                        <code>.env</code>).
+                    </li>
+                </ul>
+
+                <p>Example <code>dam.toml</code>:</p>
+                <pre><code>[project]
+name = "my-app"
+provider = "flutter"
+
+[setup]
+commands = [
+    "flutter pub get",
+    "flutter pub run build_runner build"
+]
+
+[profiles.full]
+description = "Everything, for internal team members"
+include = ["**/*"]
+exclude = [".env", "*.log"]
+
+[profiles.contributor]
+description = "Safe to hand to an external contributor"
+include = ["lib/**", "pubspec.yaml", "README.md"]
+exclude = [".env", "**/secrets/**"]</code></pre>
+
+                <p><strong>Providers</strong> are project-type templates that come with sensible defaults, driving two
+                    things automatically from that single config:</p>
+
+                <ul>
+                    <li><strong>Environment checks</strong> — before unpacking a <code>.dam</code> archive, DAM asks
+                        the declared provider whether your machine looks ready for this kind of project (e.g. is a
+                        required toolchain installed), and warns you if it isn't.</li>
+                    <li><strong>Setup commands</strong> — the commands listed in <code>[setup]</code> travel with the
+                        archive. On import, DAM surfaces them for you to run so your dependencies get installed;
+                        exactly how they're surfaced depends on the provider (see below).</li>
+                </ul>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Provider</th>
+                            <th>Best for</th>
+                            <th>On import</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>flutter</code></td>
+                            <td>Flutter/Dart mobile projects.</td>
+                            <td>Checks that Flutter is installed, then prints the declared setup commands as
+                                ready-to-run suggestions.</td>
+                        </tr>
+                        <tr>
+                            <td><code>custom</code></td>
+                            <td>Any other type of project, or one with no standard toolchain to verify.</td>
+                            <td>No environment check is performed. Setup commands are written to a
+                                <code>setup_untrusted.sh</code> script in the extracted project instead of being
+                                printed, so you can review arbitrary commands before running anything.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="callout">
+                    <strong>Note</strong>
+                    <p>DAM never executes setup commands automatically, regardless of provider — either it prints
+                        them for you to run yourself, or it writes them to a script for review first. This keeps
+                        importing someone else's project from silently running arbitrary code on your machine.</p>
+                </div>
+
+                <p>You can generate a <code>dam.toml</code> automatically during <code>dam source</code>, or by
+                    upgrading with <code>dam source --upgrade</code>.</p>
+            </section>
+
+            <section id="github-integration">
+                <h2>GitHub Integration</h2>
+                <p>DAM can target a GitHub repository as a cloud remote for your reservoir. Once configured, <a
+                        href="#dam-sync">dam sync</a> translates your local seal history, workspace objects, and stream
+                    metadata into Git database structures and pushes them to GitHub. It can also pull remote changes
+                    down to any machine—turning GitHub into an off-site backup, collaboration hub, and sharing point.
+                </p>
+
+                <h3>Target repository</h3>
+                <p>DAM reads the <code>github_repo</code> reservoir setting from your local
+                    <code>.dam/config.toml</code> (using the format <code>owner/repo_name</code>). If this setting is
+                    not configured, DAM will interactively prompt you for the target repository during your first sync
+                    and save your input automatically.
+                </p>
+                <pre><code>dam settings github_repo "your-username/your-project"</code></pre>
+
+                <h3>Authentication</h3>
+                <p>DAM resolves your GitHub credentials by checking the following, in order:</p>
+                <ol>
+                    <li><strong>Structured Credentials:</strong> It attempts to load structured JSON credentials from
+                        <code>.dam/credentials.json</code>.
+                    </li>
+                    <li><strong>Legacy Fallback:</strong> If no JSON file is found, it checks for a legacy
+                        <code>.dam/credentials</code> file containing a raw token (treated as a Classic Personal Access
+                        Token).
+                    </li>
+                    <li><strong>Interactive Prompt:</strong> If no stored credentials exist, DAM presents an interactive
+                        menu allowing you to choose your authentication mechanism:
+                        <ul>
+                            <li><strong>Fine-Grained Personal Access Token</strong> (Recommended)</li>
+                            <li><strong>Classic Personal Access Token</strong></li>
+                            <li><strong>SSH Key Path</strong> (Note: Stored for future native SSH transport; the current
+                                REST API provider requires a token).</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p>Once entered, your credentials are securely structured and saved to
+                    <code>.dam/credentials.json</code> so you won't be prompted again.
+                </p>
+                <div class="callout">
+                    <strong>Note</strong>
+                    <p><code>.dam/credentials.json</code> stores your authentication details in plain text on disk. Keep
+                        it out of anything you export or share—project exports never include your <code>.dam</code>
+                        directory, only your working files, so this is safe by default as long as you do not manually
+                        collect or seal your <code>.dam</code> directory.</p>
+                </div>
+
+                <h3>Stream-Aware Branch Mapping</h3>
+                <p>DAM sync is natively stream-aware. When you synchronize, local streams are mapped directly to
+                    corresponding Git branches on your GitHub repository (<code>refs/heads/{stream}</code>):</p>
+                <ul>
+                    <li><strong>Targeted or Bulk Syncing:</strong> You can pass a specific stream name to sync just that
+                        stream, or run a general sync to iterate through all streams located in
+                        <code>.dam/streams</code>.
+                    </li>
+                    <li><strong>Main Stream Protection:</strong> Because <code>main</code> is intended to remain your
+                        stable development stream, attempting to synchronize <code>main</code> will trigger an
+                        interactive warning prompt unless you bypass it using the `--force` flag.</li>
+                    <li><strong>History Stitching:</strong> When pushing a brand-new stream to GitHub for the first
+                        time, DAM dynamically checks the remote SHA of the stream it was created from (its base target,
+                        defaulting to <code>main</code>). It attaches this parent SHA to the new commit so that GitHub
+                        Pull Request diffs connect cleanly.</li>
+                    <li><strong>Empty Repo Bootstrapping:</strong> If you push to a completely empty GitHub repository,
+                        DAM automatically detects the conflict and bootstraps the initial Git database structure with a
+                        <code>.dam_keep</code> file before pushing your stream tree.
+                    </li>
+                </ul>
+
+                <h3>Interactive Diffs & Conflict Resolution</h3>
+                <p>You can execute explicit <code>push</code> or <code>pull</code> actions, or let DAM run an
+                    interactive state diff by comparing your local seal lineage against the remote branch tree:</p>
+                <ul>
+                    <li><strong>Up to Date:</strong> If no differences are found between local and remote seals, DAM
+                        skips the stream.</li>
+                    <li><strong>Ahead or Behind:</strong> If your local stream is ahead (new local seals) or behind
+                        (missing remote cloud seals), DAM displays the exact count and prompts you to confirm pushing or
+                        pulling.</li>
+                    <li><strong>Conflict Detection:</strong> If a stream has diverged (both ahead <em>and</em> behind),
+                        DAM alerts you to the conflict and provides an interactive menu to either <strong>[1] Pull
+                            remote changes</strong> or <strong>[2] Force Push local state</strong>.</li>
+                </ul>
+                <p>When pulling changes, DAM selectively downloads only the missing compressed objects into
+                    <code>.dam/objects/</code>, writes the missing seal records to <code>.dam/seals/</code>, and
+                    automatically updates your local stream metadata to point to the newest head seal.
+                </p>
+            </section>
+
+            <section id="command-reference">
+                <h2>Command Reference</h2>
+                <p>Every DAM command, what it does, and the options it accepts.</p>
+
+                <h3 id="dam-source">dam source</h3>
+                <p>Initializes a brand-new reservoir in the current directory, or upgrades an existing one.</p>
+                <pre><code>dam source [--name &lt;NAME&gt;] [--upgrade]</code></pre>
+                <ul>
+                    <li><code>--name</code>, <code>-n</code> — Skip the name prompt and use this name directly.</li>
+                    <li><code>--upgrade</code> — Migrate an existing reservoir to the latest DAM format. Safe to run
+                        any time; it won't touch your history.</li>
+                </ul>
+                <div class="callout">
+                    <strong>Note</strong>
+                    <p>If a reservoir already exists in a parent folder, DAM warns you before creating a separate
+                        nested one, so you don't end up with confusing overlapping projects.</p>
+                </div>
+
+                <h3 id="dam-collect">dam collect</h3>
+                <p>Scans a folder (or single file) and adds matching items to your collection, ready to be sealed.</p>
+                <pre><code>dam collect &lt;PATH&gt; [--override-purities [FILE]] [--override-impurities [FILE]] [--rule-priority &lt;purities|impurities&gt;]</code></pre>
+                <pre><code>dam collect .                          # Scan everything in the current folder
+dam collect src/                       # Scan only the "src" folder
+dam collect . --override-purities      # Ignore all .purities allowlists for this run
+dam collect . --rule-priority purities # Force purities to win any conflicts</code></pre>
+                <ul>
+                    <li><code>--override-purities</code> — Without a value, ignores all <code>.purities</code> rules
+                        entirely. With a file path, uses only the rules in that file.</li>
+                    <li><code>--override-impurities</code> — Same idea, but for <code>.impurities</code> blocklists.
+                    </li>
+                    <li><code>--rule-priority</code> — Decides who wins when a file matches both a purity and an
+                        impurity rule.</li>
+                </ul>
+
+                <h3 id="dam-creds">dam creds</h3>
+                <p>Securely stores, lists, and deletes credentials using your operating system's keychain or an
+                    encrypted local vault.</p>
+
+                <pre><code>dam creds create [--alias &lt;NAME&gt;] [--vault]
+dam creds list [--vault]
+dam creds delete &lt;ALIAS&gt; [--vault]</code></pre>
+
+                <pre><code>dam creds create
+# Interactive setup for a new credential
+
+dam creds create --alias github_personal
+# Save a credential with a custom alias
+
+dam creds create --alias github_work --vault
+# Store the credential in the encrypted local vault instead of the OS keychain
+
+dam creds list
+# Show all registered credential aliases
+
+dam creds delete github_personal
+# Remove a credential by alias
+
+dam creds delete github_work --vault
+# Remove a credential from the encrypted local vault</code></pre>
+
+                <ul>
+                    <li><code>create</code> — Interactively creates a new credential. You'll be prompted to choose a
+                        credential type (GitHub fine-grained token, classic token, SSH key, or generic secret) and
+                        provide the required value.</li>
+                    <li><code>list</code> — Displays all registered credential aliases without revealing the stored
+                        secrets.</li>
+                    <li><code>delete</code> — Permanently removes the credential associated with the specified alias.
+                    </li>
+                    <li><code>--alias</code> — Specifies the name used to reference the credential later. If omitted,
+                        you'll be prompted to enter one.</li>
+                    <li><code>--vault</code> — Stores or manages credentials in DAM's encrypted local vault instead of
+                        your operating system's secure credential store.</li>
+                </ul>
+
+                <h3 id="dam-inspect">dam inspect</h3>
+                <p>Your dashboard for seeing the current state of the reservoir.</p>
+                <pre><code>dam inspect [--rules] [&lt;TARGET&gt;]</code></pre>
+                <ul>
+                    <li><strong>By default</strong> — shows the currently active stream and all files sitting in the
+                        collection area.</li>
+                    <li><strong>With <code>--rules</code></strong> — a complete map of every <code>.purities</code>
+                        and <code>.impurities</code> file found in your project, plus a summary count of each.</li>
+                    <li><strong>With a target ending in <code>.dam</code></strong> — inspects a packaged project
+                        archive and prints its metadata without extracting it.</li>
+                </ul>
+
+                <h3 id="dam-drain">dam drain</h3>
+                <p>Empties a specific part of your reservoir.</p>
+                <pre><code>dam drain &lt;TARGET&gt;</code></pre>
+                <p><code>collection</code> — Clears the collection area back to empty. This does not touch your
+                    actual workspace files or any sealed history.</p>
+
+                <h3 id="dam-seal">dam seal</h3>
+                <p>Creates a permanent snapshot from everything currently in the collection area — the equivalent of
+                    a commit.</p>
+                <pre><code>dam seal "&lt;MESSAGE&gt;"
+dam seal --list &lt;N&gt;</code></pre>
+                <pre><code>dam seal "Added user login flow"
+dam seal --list 5     # Show the 5 most recent seals</code></pre>
+                <div class="callout">
+                    <strong>Notes</strong>
+                    <p>A seal records the exact content of every staged file, your message, and a timestamp. After
+                        sealing, the collection area automatically empties. Each seal gets an incrementing ID like
+                        <code>seal_001</code>, <code>seal_002</code>, and so on.
+                    </p>
+                </div>
+
+                <h3 id="dam-timeline">dam timeline</h3>
+                <p>Prints the chronological history of seals on your current stream. You can also render a visual ASCII
+                    Directed Acyclic Graph (DAG) to view branches, merge splits, and stream relationships.</p>
+                <pre><code>dam timeline [--graph]</code></pre>
+                <pre><code>dam timeline          # Print the full chronological text log
+dam timeline --graph  # Render the topological ASCII DAG visualization</code></pre>
+                <ul>
+                    <li><code>--graph</code>, <code>-g</code> — Display a graphical ASCII representation of your
+                        reservoir continuity, highlighting the active stream head and merge connections.</li>
+                </ul>
+
+                <h3 id="dam-stream">dam stream</h3>
+                <p>Manage parallel development streams (the DAM equivalent of branches). DAM streams support rich
+                    continuity metadata including descriptions, ownership, priorities, targets, goals, and notes.</p>
+                <pre><code>dam stream [SUBCOMMAND]</code></pre>
+                <pre><code>dam stream                                         # List all streams and their priority/status
+dam stream create experiment-ui                    # Create a stream inheriting current history
+dam stream create feature-login --from main        # Branch explicitly from the 'main' stream
+dam stream inspect experiment-ui                   # View detailed metadata, goals, and latest seal
+dam stream goal experiment-ui "Refactor navbar"  # Add a specific goal to the stream
+dam stream delete experiment-ui                    # Delete a stream (prompts if seals are attached)</code></pre>
+                <p><strong>Subcommands:</strong></p>
+                <ul>
+                    <li><code>create &lt;NAME&gt; [--from &lt;STREAM&gt;]</code> — Create a new stream. Automatically
+                        inherits the latest seal from the parent stream so historical continuity is preserved. Prompts
+                        interactively for metadata if flags are omitted.</li>
+                    <li><code>inspect [&lt;NAME&gt;]</code> — Display stream dashboard including description, owner,
+                        priority, target, status, latest seal, and active goals. Defaults to the active stream if
+                        omitted.</li>
+                    <li><code>goal &lt;NAME&gt; [TEXT] [--clear]</code> — Add a numbered goal to the stream, or clear
+                        existing goals.</li>
+                    <li><code>notes / description / target</code> — Update or clear rich metadata attributes on the
+                        specified stream.</li>
+                    <li><code>delete &lt;NAME&gt;</code> — Remove a stream. If the stream has associated historical
+                        seals, DAM will warn you and require interactive confirmation before removing them.</li>
+                </ul>
+
+                <h3 id="dam-flowinto">dam flowinto</h3>
+                <p>Safely diverts your active workspace flow to a different development stream — the DAM equivalent of
+                    checking out a branch.</p>
+                <pre><code>dam flowinto &lt;NAME&gt;</code></pre>
+                <pre><code>dam flowinto experiment-ui</code></pre>
+                <p>If you have unsealed, staged files in your workspace when switching streams, DAM detects the unsaved
+                    continuity and will prompt you to automatically generate a temporary Continuity Snapshot (Seal)
+                    before flowing into the new stream.</p>
+
+                <h3 id="dam-merge">dam merge <span
+                        style="font-size: 0.8em; padding: 2px 8px; background: #ffeba7; color: #8a6d00; border-radius: 4px; font-weight: normal; margin-left: 8px;">⚠️
+                        Experimental, not suggested for production workflow yet</span></h3>
+                <p>Merge another stream's seals and file structures into your currently active stream using a smart
+                    3-way conflict resolution engine.</p>
+                <pre><code>dam merge &lt;SOURCE&gt; [--apply]</code></pre>
+                <pre><code>dam merge experiment-ui          # Calculate merge plan and flag potential conflicts
+dam merge --apply                # Apply the calculated merge and generate a multi-parent seal</code></pre>
+                <ul>
+                    <li><code>&lt;SOURCE&gt;</code> — The name of the stream you want to merge into your currently
+                        active workspace.</li>
+                    <li><code>--apply</code>, <code>-a</code> — Execute the previously calculated merge plan, restore
+                        workspace files from the object pool, and commit a new multi-parent seal to history.</li>
+                </ul>
+                <div class="callout">
+                    <strong>Smart 3-Way Merging</strong>
+                    <p>When you run <code>dam merge &lt;SOURCE&gt;</code>, DAM climbs backward through your DAG lineage
+                        to identify the closest common ancestor (Base Seal). It then evaluates all file paths across the
+                        Base, Target, and Source seals:</p>
+                    <ul>
+                        <li><strong>Clean Updates:</strong> Changes made purely in the source stream are automatically
+                            accepted.</li>
+                        <li><strong>Conflict Handling:</strong> If a file was modified differently in both streams, DAM
+                            marks it as a structural conflict in the merge plan and defaults your active workspace file
+                            to your target stream's version.</li>
+                        <li><strong>Multi-Parent Sealing:</strong> Applying the merge creates a permanent seal linking
+                            both the Target Head and Source Head as parents, preserving true continuity.</li>
+                    </ul>
+                </div>
+
+                <h3 id="dam-apply">dam apply</h3>
+                <p>Restores your workspace files to exactly match a previously sealed snapshot.</p>
+                <pre><code>dam apply &lt;SEAL_ID&gt; [--preview]</code></pre>
+                <pre><code>dam apply seal_001            # Restore files to match seal_001
+dam apply seal_001 --preview  # See what would change, without touching anything</code></pre>
+                <div class="callout">
+                    <strong>Safety features</strong>
+                    <p>With <code>--preview</code>, DAM only prints a description and affected files — nothing on
+                        disk is modified. If you have unsealed files in your collection, DAM warns you before
+                        restoring and offers to automatically create a safety seal first.</p>
+                </div>
+
+                <h3 id="dam-sync">dam sync</h3>
+                <p>Pushes or pulls your seal history, stream metadata, and object blobs to and from a linked cloud
+                    platform. GitHub is the default provider.</p>
+                <pre><code>dam sync [&lt;STREAM&gt;] [--action &lt;ACTION&gt;] [--platform &lt;PLATFORM&gt;] [--force]</code></pre>
+                <pre><code>dam sync                                  # Interactively diff and sync all eligible streams
+dam sync experiment-ui                    # Run interactive diff exclusively for 'experiment-ui'
+dam sync --action push                    # Push all stream branches to the cloud
+dam sync experiment-ui --action pull      # Pull remote updates for a specific stream
+dam sync main --force                     # Bypass the protection warning when syncing 'main'</code></pre>
+                <ul>
+                    <li><code>&lt;STREAM&gt;</code> — Optional target stream name. If omitted, DAM scans
+                        <code>.dam/streams</code> and synchronizes all eligible streams interactively.
+                    </li>
+                    <li><code>--action</code>, <code>-a</code> — Explicitly set to <code>push</code> or
+                        <code>pull</code>. If omitted, triggers interactive diff mode.
+                    </li>
+                    <li><code>--platform</code>, <code>-p</code> — The cloud provider to target. Defaults to
+                        <code>github</code>.
+                    </li>
+                    <li><code>--force</code>, <code>-f</code> — Bypass interactive confirmation prompts, specifically
+                        when synchronizing the protected <code>main</code> stream.</li>
+                </ul>
+                <div class="callout">
+                    <strong>Interactive Diff & Stream Protection</strong>
+                    <p>In interactive mode, DAM compares your local seal lineage against remote branch heads and
+                        displays how many seals you are ahead or behind by. If both exist, it alerts you to the diverged
+                        branch and lets you choose between pulling remote changes or force-pushing your local state.</p>
+                    <p>Because <code>main</code> is intended to remain a stable development timeline, attempting to sync
+                        it will trigger an interactive warning prompt unless you pass the <code>--force</code> flag.</p>
+                </div>
+                <p>See <a href="#github-integration">GitHub Integration</a> for how repository targeting and
+                    authentication are configured.</p>
+
+                <h3 id="dam-export">dam export</h3>
+                <p>Packages your project for sharing. There are two distinct modes.</p>
+
+                <h4 id="dam-export-seal">Export a Seal</h4>
+                <p>Share one specific historical snapshot.</p>
+                <pre><code>dam export seal &lt;SEAL_ID&gt; [--zip]</code></pre>
+                <pre><code>dam export seal seal_001        # Compact, compressed bundle (.seal) for re-importing into DAM
+dam export seal seal_001 --zip  # Plain .zip of the raw files, for general use</code></pre>
+
+                <h4 id="dam-export-project">Export a Project</h4>
+                <p>Package your <em>entire current project</em> — not just one snapshot — into a portable
+                    <code>.dam</code> archive that includes setup instructions and metadata, ready to hand off to
+                    someone else.
+                </p>
+                <pre><code>dam export project &lt;PROJECT_NAME&gt; [--profile &lt;PROFILE&gt;]</code></pre>
+                <pre><code>dam export project my-app --profile contributor</code></pre>
+                <p>This uses the include/exclude rules and setup commands defined in your project's
+                    <code>dam.toml</code> profile (see <a href="#profiles">Project Profiles</a>). If your reservoir is
+                    configured to require a password for project exports, you'll be prompted to set one, and the
+                    archive will be encrypted.
+                </p>
+
+                <h3 id="dam-import">dam import</h3>
+                <p>Imports a previously exported archive back into a reservoir.</p>
+                <pre><code>dam import &lt;FILE&gt;</code></pre>
+                <ul>
+                    <li><code>.seal</code> — A compressed snapshot bundle exported with <code>dam export seal</code>.
+                    </li>
+                    <li><code>.zip</code> — A raw, uncompressed file package.</li>
+                    <li><code>.dam</code> — A full portable project archive exported with <code>dam export
+                            project</code>. Importing one of these shows the project's metadata, checks whether your
+                        machine has the right environment for its provider, prompts for a password if encrypted, and
+                        extracts the files into a new folder (or merges into the current one).</li>
+                </ul>
+                <pre><code>dam import teammates-work.seal
+dam import shared-app.dam</code></pre>
+                <p>If the imported project includes custom setup commands, DAM writes them to a reviewable script
+                    rather than running them automatically, so you can check what they do first.</p>
+
+                <h3 id="dam-settings">dam settings</h3>
+                <p>View or change your reservoir's configuration.</p>
+                <pre><code>dam settings                            # Print all current settings
+dam settings --interactive              # Open an interactive settings dashboard
+dam settings &lt;KEY&gt;                      # Read the current value of one setting
+dam settings &lt;KEY&gt; &lt;VALUE&gt;              # Update one setting directly</code></pre>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>name</code></td>
+                            <td>Your reservoir's project name.</td>
+                        </tr>
+                        <tr>
+                            <td><code>purities_overrides_impurities</code></td>
+                            <td>If <code>true</code>, purity (allow) rules automatically win conflicts.</td>
+                        </tr>
+                        <tr>
+                            <td><code>impurities_overrides_purities</code></td>
+                            <td>If <code>true</code>, impurity (block) rules automatically win conflicts.</td>
+                        </tr>
+                        <tr>
+                            <td><code>suppress_nested_warning</code></td>
+                            <td>If <code>true</code>, hides the warning about nested reservoirs.</td>
+                        </tr>
+                        <tr>
+                            <td><code>enforce_password_on_project_import</code></td>
+                            <td>If <code>true</code>, project exports always require a password.</td>
+                        </tr>
+                        <tr>
+                            <td><code>github_repo</code></td>
+                            <td>Target GitHub repository for <code>dam sync</code>, in <code>owner/repo</code> format.
+                                See <a href="#github-integration">GitHub Integration</a>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>github_token_path</code></td>
+                            <td>Optional path to a file containing your GitHub access token, used instead of the
+                                default <code>.dam/credentials</code> location.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <pre><code>dam settings name "New Project Name"
+dam settings purities_overrides_impurities true</code></pre>
+
+                <h3 id="dam-destroy">dam destroy</h3>
+                <p>Permanently removes — or safely archives — your entire reservoir. Use with care.</p>
+                <pre><code>dam destroy            # Interactively delete the reservoir
+dam destroy --archive  # Rename the reservoir to a backup instead of deleting it</code></pre>
+                <div class="callout">
+                    <strong>Safety measures</strong>
+                    <p>Destruction always shows exactly what will be lost before doing anything. You must type your
+                        exact project name (or the word <code>DESTROY</code>) to confirm, followed by a final "are
+                        you sure" prompt. The <code>--archive</code> option renames your reservoir to a backup folder
+                        instead of deleting it outright.</p>
+                </div>
+
+                <h3 id="dam-update">dam update</h3>
+<p>Checks for available CLI updates and manages your DAM version manually. Maintains intelligent version synchronization with proactive cache updates and urgency-based prompts.</p>
+<pre><code>dam update</code></pre>
+<pre><code>dam update --check-only</code></pre>
+<p>Running <code>dam update</code> connects to the update server and proactively synchronizes DAM's internal cache, ensuring the background checker is always aware of your manual update attempts. The urgency level of any available release (Soft, Medium, or Urgent) determines whether an interactive prompt appears — Soft updates are silent, while Urgent updates demand immediate attention.</p>
+ 
+<h4>Options</h4>
+<table>
+    <thead>
+        <tr>
+            <th>Flag</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>--check-only</code></td>
+            <td>Check for updates without prompting or applying. Displays available version information and exits.</td>
+        </tr>
+        <tr>
+            <td><code>--force</code></td>
+            <td>Force an update check even if a check was performed recently. Useful for testing update detection.</td>
+        </tr>
+        <tr>
+            <td><code>--verbose</code></td>
+            <td>Display detailed update information including cache state, urgency reasoning, and server response details.</td>
+        </tr>
+        <tr>
+            <td><code>--no-interactive</code></td>
+            <td>Skip all prompts. Applies the update automatically if urgency is Urgent; otherwise exits silently.</td>
+        </tr>
+    </tbody>
+</table>
+ 
+<h4>Examples</h4>
+<pre><code>dam update                        # Standard interactive check
+dam update --check-only           # Check without prompting
+dam update --force                # Force check even if recently checked
+dam update --force --verbose      # Force check with detailed information</code></pre>
+ 
+<h4>Background Behavior</h4>
+<p>DAM automatically checks for updates in the background every 24 hours. Manual <code>dam update</code> attempts reset this cycle, ensuring timely notifications while respecting your preferences. The background checker tracks:</p>
+<ul>
+    <li><strong>Last Check Time:</strong> Prevents excessive server requests by maintaining a 24-hour check interval.</li>
+    <li><strong>Urgency State:</strong> Remembers the urgency of available updates to determine future prompt behavior.</li>
+    <li><strong>Manual Override Awareness:</strong> Acknowledges when you run <code>dam update</code> manually, adjusting prompt scheduling accordingly.</li>
+</ul>
+ 
+<div class="callout">
+    <strong>Update Urgency Levels</strong>
+    <p><strong>Soft:</strong> Non-critical updates, bug fixes, or minor improvements. No interactive prompt. <strong>Medium:</strong> Important features or security patches. Interactive prompt shown. <strong>Urgent:</strong> Critical security fixes or breaking changes. Immediate interactive prompt with emphasis.</p>
+</div>
+            </section>
+
+            <section id="workflows">
+                <h2>Common Workflows</h2>
+
+                <h3>Starting a new project</h3>
+                <pre><code>dam source
+dam collect .
+dam seal "Initial commit"</code></pre>
+
+                <h3>Making and saving changes</h3>
+                <pre><code>dam collect .
+dam seal "Fixed the login bug"</code></pre>
+
+                <h3>Trying something experimental without risk</h3>
+                <pre><code>dam stream experiment
+dam flowinto experiment
+dam collect .
+dam seal "Trying a new layout"
+# If it doesn't work out, just flow back to main:
+dam flowinto main</code></pre>
+
+                <h3>Going back to an earlier snapshot</h3>
+                <pre><code>dam timeline
+dam apply seal_004 --preview
+dam apply seal_004</code></pre>
+
+                <h3>Sharing your whole project with someone else</h3>
+                <pre><code>dam export project my-app --profile contributor</code></pre>
+
+                <h3>Getting someone else's project running</h3>
+                <pre><code>dam import my-app.dam</code></pre>
+
+                <h3>Backing up your seals to GitHub</h3>
+                <pre><code>dam settings github_repo "your-username/your-project"
+dam sync --action push</code></pre>
+
+                <h3>Picking up your work on another machine</h3>
+                <pre><code>dam source
+dam settings github_repo "your-username/your-project"
+dam sync --action pull
+dam apply seal_001</code></pre>
+            </section>
+
+            <section id="faq">
+                <h2>FAQ</h2>
+
+                <h3>What's the difference between exporting a seal and exporting a project?</h3>
+                <p>Exporting a <em>seal</em> shares one specific snapshot of your history — useful for sending a
+                    single version of a file set. Exporting a <em>project</em> packages your entire current setup,
+                    including setup instructions and provider info, meant for someone to pick up and start working
+                    with right away.</p>
+
+                <h3>What happens to my collection when I seal?</h3>
+                <p>It's automatically cleared, so you're ready to start collecting your next round of changes.</p>
+
+                <h3>Can I undo a destroy?</h3>
+                <p>No — <code>dam destroy</code> is permanent. Use <code>dam destroy --archive</code> instead if you
+                    want a safety net; it simply renames your reservoir to a backup folder rather than deleting it.</p>
+
+                <h3>What if two rule files disagree on a file?</h3>
+                <p>That's a conflict. By default DAM asks you what to do, but you can set a permanent preference with
+                    <code>dam settings</code>, or override it per-run with <code>dam collect --rule-priority</code>.
+                </p>
+
+                <h3>What happened to dam fetch?</h3>
+                <p>It's been replaced by <a href="#dam-sync">dam sync</a>. Fetch pulled history from another local
+                    reservoir path; sync does the equivalent job against a configured cloud platform (GitHub today),
+                    and also handles pushing your own history up, which fetch never did.</p>
+
+                <h3>What's the difference between dam sync and dam export project?</h3>
+                <p><code>dam sync</code> keeps your full seal history in continuous two-way sync with a cloud
+                    platform — it's for backup and picking up work elsewhere. <code>dam export project</code>
+                    creates a one-time, self-contained snapshot for handing off to someone who isn't going to use
+                    DAM's sync at all.</p>
+
+                <h3>Is my data encrypted?</h3>
+                <ul>
+                    <li><strong>Credentials</strong> are always encrypted (OS Keychain or AES-256-GCM vault).</li>
+                    <li><strong>Project exports</strong> support optional password encryption.</li>
+                    <li><strong>Seal exports and local reservoirs</strong> are not encrypted by default.</li>
+                </ul>
+
+                <h3>How do I manage credentials?</h3>
+                <p>Use the <code>dam creds</code> command suite:</p>
+                <ul>
+                    <li><code>dam creds create</code> — Store a new credential.</li>
+                    <li><code>dam creds list</code> — Display all registered aliases.</li>
+                    <li><code>dam creds delete</code> — Remove a credential.</li>
+                </ul>
+
+                <h3>What happens to old credential files when I upgrade?</h3>
+                <p>Running <code>dam source --upgrade</code> automatically migrates legacy credentials into the new
+                    system and permanently removes the old plaintext files.</p>
+
+                <h3>How does 3-way merging work?</h3>
+                <p><code>dam merge</code> finds the closest common ancestor between your current stream and the source
+                    stream, then intelligently combines changes. If both sides modified the same file differently,
+                    you'll
+                    be guided through resolving the conflict.</p>
+
+                <h3>What's the difference between dam sync and dam export?</h3>
+                <p><code>dam sync</code> pushes your entire seal timeline and stream metadata to GitHub for backup and
+                    sharing. <code>dam export</code> packages a single seal or your entire project into a portable
+                    archive for one-time distribution.</p>
+            </section>
+            </section>
+
+            <section id="whats-new">
+                <h2>What's New</h2>
+                <h3 id="whats-new-051">v0.5.1</h3>
+                <div class="callout">
+                    <strong>Headline features: Smart Auto-Updates & Path Environment Checking</strong>
+                    <p>v0.5.1 introduces intelligent update management to maintain CLI versioning without workflow
+                        disruption, robust path verification with file canonicalization, and interactive warning
+                        suppression to eliminate manual environment setup.</p>
+                </div>
+
+                <h4>New: dam update Command</h4>
+                <p>DAM now provides manual control over version checking and updating with a new <code>dam update</code>
+                    command that intelligently manages your CLI version.</p>
+                <pre><code>dam update                    # Check for updates and display status
+dam update --check-only       # Check without prompting
+dam update --force            # Force check even if recently checked
+dam update --verbose          # Show detailed update information</code></pre>
+
+                <h4>Smart Update Features</h4>
+                <ul>
+                    <li><strong>Proactive Cache Synchronization:</strong> Running <code>dam update</code> connects to
+                        the update server and proactively synchronizes DAM's internal cache, ensuring the background
+                        checker is always aware of manual update attempts.</li>
+                    <li><strong>Automated 24-Hour Cycle:</strong> Background checks run automatically every 24 hours
+                        without user intervention, keeping your CLI version information current.</li>
+                    <li><strong>Urgency-Based Prompts:</strong> Update urgency levels (Soft, Medium, or Urgent)
+                        determine whether an interactive prompt appears. Soft updates are silent; Urgent updates demand
+                        immediate attention.</li>
+                    <li><strong>Manual Refresh Awareness:</strong> The background checker accurately resumes prompting
+                        when appropriate, accounting for your manual <code>dam update</code> attempts.</li>
+                </ul>
+
+                <h4>New: Enhanced Path Verification with File Canonicalization</h4>
+                <p>Environment path checking has been completely rebuilt using robust file canonicalization to ensure
+                    accurate detection across all system configurations.</p>
+                <pre><code>dam source                    # Automatically verifies PATH during initialization
+dam source --check-path       # Perform path verification without initializing</code></pre>
+
+                <h4>Path Verification Improvements</h4>
+                <ul>
+                    <li><strong>Robust File Canonicalization:</strong> The new canonicalization engine resolves all
+                        symlinks to their absolute paths, preventing false positives and ensuring true binary identity
+                        matching.</li>
+                    <li><strong>Symlink & Binary Handling:</strong> Safely distinguishes between symlinks pointing to
+                        the same binary and identically named binaries in different directories, eliminating
+                        configuration errors.</li>
+                    <li><strong>Conflict Detection:</strong> Automatically detects when multiple binaries share the same
+                        name across different PATH entries and clearly indicates which one is active.</li>
+                </ul>
+
+                <h4>New: Interactive Warning Suppression</h4>
+                <p>The "not in PATH" warning has been transformed from a silent message into an interactive prompt,
+                    giving users direct control over suppression without manual environment variable exports.</p>
+                <pre><code># During any DAM operation (e.g., dam collect):
+⚠ Warning: DAM binary not found in system PATH
+ 
+Do you want to permanently suppress this warning?
+[Y] Suppress this warning permanently
+[N] Keep showing this warning
+[E] Export PATH environment variable
+ 
+Your choice: Y
+✓ Suppression saved. You won't see this warning again.</code></pre>
+
+                <h4>Warning Suppression Options</h4>
+                <ul>
+                    <li><strong>Permanent Suppression [Y]:</strong> Saves your preference to
+                        <code>~/.dam/config/suppressed_warnings.json</code>, ensuring the warning never appears again
+                        for this user.</li>
+                    <li><strong>Keep Showing [N]:</strong> Continues displaying the warning on future DAM operations
+                        until you choose to suppress it.</li>
+                    <li><strong>Export PATH [E]:</strong> DAM automatically detects your shell (bash, zsh, fish, etc.)
+                        and outputs the exact line to add to your shell profile, then optionally adds it for you.</li>
+                </ul>
+
+                <h4>Re-enabling Suppressed Warnings</h4>
+                <p>If you need to re-enable a suppressed warning, you can do so through DAM settings:</p>
+                <pre><code>dam settings --enable-warning path_not_in_env</code></pre>
+                <p>Or by manually editing <code>~/.dam/config/suppressed_warnings.json</code>.</p>
+
+                <h4>Workflow Example: Complete v0.5.1 Experience</h4>
+                <pre><code># User updates DAM and initializes a project
+$ dam update
+✓ Checking for updates...
+Update available: v0.5.1 (Medium urgency)
+Apply update? (y/n): y
+ 
+# After update, run dam source with path verification
+$ dam source
+✓ Initializing Reservoir...
+✓ Checking PATH using file canonicalization...
+⚠ Warning: DAM binary not found in system PATH
+ 
+Do you want to permanently suppress this warning? [Y/n]: y
+✓ Suppression saved.
+ 
+# Work normally without further warnings
+$ dam collect .
+✓ Collection complete</code></pre>
+
+                <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 3rem 0;">
+
+                <h3 id="whats-new-050">v0.5.0</h3>
+                <div class="callout">
+                    <strong>Headline features: Secure Credential Management</strong>
+                    <p>v0.5.0 introduces a centralized, secure credential storage system and automatic migration from
+                        legacy credential formats.</p>
+                </div>
+
+                <h4>New: Centralized Credential Manager</h4>
+                <p>DAM now provides a unified system for storing GitHub tokens, SSH keys, and generic secrets securely.
+                    Choose between OS Keychain (default) or an encrypted local vault.</p>
+                <pre><code>dam creds create --alias github_token  # Store securely
+dam creds list                          # View all aliases
+dam creds delete github_token           # Remove a credential</code></pre>
+
+                <h4>New: Credential Types Support</h4>
+                <p>When creating credentials, you can choose from four types:</p>
+                <ul>
+                    <li><strong>Fine-Grained Tokens</strong> (GitHub) — Recommended for security; scoped to specific
+                        repositories.</li>
+                    <li><strong>Classic Tokens</strong> (GitHub) — Legacy personal access tokens with broad
+                        permissions.</li>
+                    <li><strong>SSH Keys</strong> — Path to a private SSH key file.</li>
+                    <li><strong>Generic Secrets</strong> — Any custom API key or secret.</li>
+                </ul>
+
+                <h4>New: Encrypted Local Vault</h4>
+                <p>Use <code>--vault</code> to store credentials in an encrypted local vault instead of OS Keychain.
+                    Credentials are encrypted with AES-256-GCM and stored in <code>.dam/vault.bin</code>.</p>
+                <pre><code>dam creds create --alias my_token --vault  # Encrypt locally
+# Password prompted (or via DAM_VAULT_PASSWORD env variable)</code></pre>
+
+                <h4>New: Automatic Migration Pipeline</h4>
+                <p>Upgrading from v0.4.x automatically migrates legacy credential files:</p>
+                <pre><code>dam source --upgrade</code></pre>
+                <p>This migrates <code>.dam/credentials</code> and <code>.dam/credentials.json</code> into the new
+                    secure system and permanently removes the old plaintext files.</p>
+
+                <h4>New: PBKDF2 Key Derivation</h4>
+                <p>Vault passwords are derived using PBKDF2 with SHA-256 (100,000 iterations) for strong key derivation
+                    and protection against brute-force attacks.</p>
+
+                <h4>Enhanced dam sync</h4>
+                <p>GitHub synchronization now utilizes the new credential system automatically. No more manual token
+                    management — just create a credential and let DAM handle the rest.</p>
+
+                <div class="callout">
+                    <strong>Breaking change: Legacy credential formats removed</strong>
+                    <p>The legacy <code>.dam/credentials.json</code> format (from v0.4.x) is no longer supported. Run
+                        <code>dam source --upgrade</code> to migrate your credentials to the new secure system.
+                    </p>
+                </div>
+
+                <h3 id="whats-new-040">v0.4.1</h3>
+                <div class="callout">
+                    <strong>Headline feature: Stream-Aware Cloud Sync & Smart 3-Way Merging</strong>
+                    <p>v0.4.1 elevates DAM from a local continuity tool into a collaborative, multi-stream ecosystem.
+                        With native stream-to-branch mapping for GitHub, visual ASCII DAG graphs, and an intelligent
+                        3-way merge engine, managing parallel development lines is now effortless.</p>
+                </div>
+
+                <h4>New: dam merge <span
+                        style="font-size: 0.8em; padding: 2px 8px; background: #ffeba7; color: #8a6d00; border-radius: 4px; font-weight: normal; margin-left: 8px;">⚠️
+                        Experimental, not suggested for production workflow yet</span></h4>
+                <p>You can now merge parallel development streams into your active workspace using a smart 3-way
+                    conflict resolution engine. By climbing backward through your history to find the closest common
+                    ancestor (Base Seal), DAM evaluates changes across the Base, Target, and Source streams.</p>
+                <ul>
+                    <li><strong>Smart Resolution:</strong> Clean modifications are accepted automatically, while
+                        structural conflicts are flagged in a generated merge plan without destroying your active files.
+                    </li>
+                    <li><strong>Multi-Parent Sealing:</strong> Applying a merge (<code>dam merge --apply</code>) creates
+                        an immutable seal linking both the Target Head and Source Head as parents, preserving true
+                        historical continuity.</li>
+                </ul>
+                <pre><code>dam merge experiment-ui          # Calculate merge plan and flag potential conflicts
+dam merge --apply                # Apply the calculated merge and commit a multi-parent seal</code></pre>
+                <p>See <a href="#dam-merge">dam merge</a> in the Command Reference for full usage details.</p>
+
+                <h4>New: Stream-Aware Cloud Sync & Main Protection</h4>
+                <p><code>dam sync</code> has been completely rebuilt to understand streams. When synchronizing with
+                    GitHub, local streams map 1:1 to remote Git branches (<code>refs/heads/{stream}</code>).</p>
+                <ul>
+                    <li><strong>Interactive Diffs & Conflict Resolution:</strong> Running <code>dam sync</code> without
+                        arguments compares your local seal lineage against remote branch heads. If a branch has
+                        diverged, DAM presents an interactive menu to either pull remote updates or force-push local
+                        state.</li>
+                    <li><strong>Main Stream Protection:</strong> Because <code>main</code> is meant to remain your
+                        stable timeline, attempting to sync it triggers an interactive warning prompt unless bypassed
+                        with the <code>--force</code> flag.</li>
+                    <li><strong>History Stitching & Bootstrapping:</strong> Pushing a new stream dynamically attaches
+                        the parent SHA of the branch it was created from for clean Pull Request diffs. If pushing to a
+                        completely empty repository, DAM automatically bootstraps the initial Git database structure
+                        with a <code>.dam_keep</code> file.</li>
+                </ul>
+
+                <h4>New: ASCII DAG Visualizer</h4>
+                <p>You can now visualize your reservoir's topological history directly in the terminal. Passing the
+                    `--graph` flag to the timeline command renders an ASCII Directed Acyclic Graph (DAG) displaying
+                    branches, merge splits, and active stream heads.</p>
+                <pre><code>dam timeline --graph</code></pre>
+
+                <h4>New: Rich Stream Metadata & Goals</h4>
+                <p>Streams are no longer just simple pointers. They now support rich continuity metadata, allowing you
+                    to track descriptions, owners, priorities, target branches, notes, and numbered goals directly
+                    inside your reservoir.</p>
+                <pre><code>dam stream create feature-login --from main        # Branch explicitly from 'main'
+dam stream goal feature-login "Refactor auth API"  # Add a numbered goal
+dam stream inspect feature-login                   # View the rich metadata dashboard</code></pre>
+
+                <h4>New: Auto-Snapshotting in dam flowinto</h4>
+                <p>Switching streams is now safer than ever. If you attempt to run
+                    <code>dam flowinto &lt;STREAM&gt;</code> while having unsealed, staged continuity in your active
+                    workspace, DAM detects the unsaved progress and interactively prompts you to generate a temporary
+                    Continuity Snapshot before moving your flow.
+                </p>
+
+                <div class="callout">
+                    <strong>Breaking change: Modernized Authentication & Removed Settings</strong>
+                    <p>The legacy <code>github_token_path</code> reservoir setting and plain environment variable
+                        lookups have been removed in favor of a secure, structured credential store. DAM now reads from
+                        <code>.dam/credentials.json</code> (with a fallback to <code>.dam/credentials</code>). If no
+                        credentials exist, an interactive wizard prompts you to choose between Fine-Grained Personal
+                        Access Tokens, Classic Tokens, or SSH key paths.
+                    </p>
+                </div>
+
+                <div class="callout">
+                    <strong>Breaking change: dam fetch has been removed</strong>
+                    <p><code>dam fetch</code> is no longer part of DAM. Its role—bringing in history and file objects
+                        from remote sources—is handled entirely by <code>dam sync pull</code>, which operates natively
+                        against your configured cloud platform.</p>
+                </div>
+
+
+                <h3 id="whats-new-030">v0.3.0</h3>
+                <div class="callout">
+                    <strong>Headline feature: Cloud Sync with GitHub</strong>
+                    <p>v0.4.1 introduces <code>dam sync</code> — the ability to push and pull your seal history to
+                        and from a linked cloud platform. GitHub is the first supported platform, with more planned.</p>
+                </div>
+
+                <h3>New: dam sync</h3>
+                <p>DAM reservoirs can now stay backed up and shared through a real cloud remote. Running <code>dam
+                        sync</code> with no arguments compares your local timeline against the remote and walks you
+                    through resolving any difference — pushing, pulling, or resolving a conflict if both sides have
+                    moved on.</p>
+                <pre><code>dam sync                        # Interactive: compares local vs. remote, then prompts
+dam sync --action push                   # Push local seals straight to the cloud
+dam sync --action pull                   # Pull remote seals straight into your reservoir
+dam sync --action push --platform github # Explicit platform selection (github is currently the default)</code></pre>
+                <p>See <a href="#dam-sync">dam sync</a> in the Command Reference and <a
+                        href="#github-integration">GitHub
+                        Integration</a> for the full breakdown of how authentication and repository targeting work.</p>
+
+                <h3>New: GitHub as a first cloud platform</h3>
+                <p>DAM can now target a GitHub repository as a remote for your reservoir. Your seal history and the
+                    underlying file objects they depend on are translated into commits on the repository, and can be
+                    pulled back down on any other machine. See <a href="#github-integration">GitHub Integration</a>
+                    for setup and authentication details.</p>
+
+                <h3>New: github_repo and github_token_path settings</h3>
+                <p>Two new reservoir settings support the sync workflow: <code>github_repo</code> stores your target
+                    repository (<code>owner/repo</code>), and <code>github_token_path</code> optionally points DAM
+                    at a custom file containing your access token. Both are configurable via <a href="#dam-settings">dam
+                        settings</a>, including the interactive dashboard.</p>
+
+                <div class="callout">
+                    <strong>Breaking change: dam fetch has been removed</strong>
+                    <p><code>dam fetch</code> is no longer part of DAM. Its role — bringing in history and file data
+                        from elsewhere — is now covered by <code>dam sync pull</code>, which does the same job
+                        against a configured cloud platform instead of a local path.</p>
+                </div>
+
+                <div class="callout">
+                    <strong>Documentation change: DAM now has its own vocabulary</strong>
+                    <p>The documentation no longer maps DAM's terms against Git's. DAM is not a Git wrapper, and its
+                        terminology is defined on its own terms — see <a href="#vocabulary">Core Vocabulary</a>.</p>
+                </div>
+
+                <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 3rem 0;">
+
+                <h3 id="whats-new-020">v0.2.0</h3>
+                <div class="callout">
+                    <strong>Headline feature: Project Export</strong>
+                    <p>v0.2.0 introduced <code>dam export project</code> and <code>dam import</code> support for
+                        <code>.dam</code> archives — the ability to package your entire project, not just a single
+                        snapshot, into one portable file someone else can pick up and run.
+                    </p>
+                </div>
+
+                <h4>Project Export, in full</h4>
+                <p>Previously, DAM could only export individual seals. A seal export is great for sharing one
+                    snapshot of files, but it doesn't capture how to actually get a project running again. Project
+                    Export closed that gap.</p>
+                <p>Running <code>dam export project &lt;NAME&gt; [--profile &lt;PROFILE&gt;]</code> bundles:</p>
+                <ul>
+                    <li>Your current working files, filtered through the include/exclude patterns defined in the
+                        selected <code>dam.toml</code> profile (e.g. a <code>contributor</code> profile that strips
+                        out <code>.env</code> and other sensitive files).</li>
+                    <li>Project metadata — name, author, export timestamp, and declared provider.</li>
+                    <li>Any setup commands needed to get the project running again after import.</li>
+                    <li>Optional password-based encryption, automatically required if your reservoir has
+                        <code>enforce_password_on_project_import</code> enabled.
+                    </li>
+                </ul>
+                <pre><code>dam export project my-app --profile contributor</code></pre>
+
+                <h4>New: dam.toml project profiles</h4>
+                <p>Project Export is powered by a <code>dam.toml</code> file in your project root, which can be
+                    scaffolded automatically during <code>dam source</code> or generated later with <code>dam
+                        source --upgrade</code>. It defines named profiles (different include/exclude sets for
+                    different audiences) and a <strong>provider</strong> — which tells DAM what environment checks
+                    and setup commands apply on import. See <a href="#profiles">Project Profiles</a> for the full
+                    breakdown.</p>
+
+                <h4>New: smarter dam import</h4>
+                <p><code>dam import</code> recognizes three formats — <code>.seal</code>, <code>.zip</code>, and the
+                    <code>.dam</code> project archive. Importing a <code>.dam</code> file shows you the project's
+                    metadata up front, checks whether your machine has the right environment for its declared
+                    provider, prompts for a password if the archive is encrypted, and surfaces any custom setup
+                    commands for you to review rather than running them blindly.
+                </p>
+
+                <h4>New: dam inspect on archives</h4>
+                <p><code>dam inspect</code> can target a <code>.dam</code> file directly, printing its metadata
+                    (project name, author, timestamp, provider, profile, setup commands) without extracting
+                    anything — useful for vetting an archive before you trust it.</p>
+
+                <h4>Also in this release</h4>
+                <ul>
+                    <li><code>dam collect --rule-priority</code> for one-off conflict resolution between
+                        <code>.purities</code> and <code>.impurities</code> without changing your saved settings.
+                    </li>
+                    <li><code>dam settings --interactive</code>, a numbered-menu dashboard for toggling every setting
+                        without remembering exact key names.</li>
+                    <li><code>dam destroy --archive</code>, a safer alternative to permanent deletion that renames
+                        your reservoir to a backup folder instead.</li>
+                </ul>
+            </section>
+        </main>
+
+    </div>
+
+</body>
+
+</html>

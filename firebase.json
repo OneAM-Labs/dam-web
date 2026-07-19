@@ -1,0 +1,166 @@
+{
+  "hosting": {
+    "site": "dam-pcp",
+    "public": "web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "rewrites": [
+      {
+        "source": "/",
+        "destination": "/index_main.html"
+      },
+      {
+        "source": "/docs",
+        "destination": "/docs/index.html"
+      }
+    ],
+    "redirects": [
+      {
+        "source": "/source",
+        "destination": "/docs/index.html#dam-source",
+        "type": 301
+      },
+      {
+        "source": "/collect",
+        "destination": "/docs/index.html#dam-collect",
+        "type": 301
+      },
+      {
+        "source": "/creds",
+        "destination": "/docs/index.html#dam-creds",
+        "type": 301
+      },
+      {
+        "source": "/inspect",
+        "destination": "/docs/index.html#dam-inspect",
+        "type": 301
+      },
+      {
+        "source": "/drain",
+        "destination": "/docs/index.html#dam-drain",
+        "type": 301
+      },
+      {
+        "source": "/seal",
+        "destination": "/docs/index.html#dam-seal",
+        "type": 301
+      },
+      {
+        "source": "/timeline",
+        "destination": "/docs/index.html#dam-timeline",
+        "type": 301
+      },
+      {
+        "source": "/stream",
+        "destination": "/docs/index.html#dam-stream",
+        "type": 301
+      },
+      {
+        "source": "/flow",
+        "destination": "/docs/index.html#dam-flowinto",
+        "type": 301
+      },
+      {
+        "source": "/flowinto",
+        "destination": "/docs/index.html#dam-flowinto",
+        "type": 301
+      },
+      {
+        "source": "/merge",
+        "destination": "/docs/index.html#dam-merge",
+        "type": 301
+      },
+      {
+        "source": "/apply",
+        "destination": "/docs/index.html#dam-apply",
+        "type": 301
+      },
+      {
+        "source": "/sync",
+        "destination": "/docs/index.html#dam-sync",
+        "type": 301
+      },
+      {
+        "source": "/github",
+        "destination": "/docs/index.html#github-integration",
+        "type": 301
+      },
+      {
+        "source": "/export",
+        "destination": "/docs/index.html#dam-export",
+        "type": 301
+      },
+      {
+        "source": "/export-seal",
+        "destination": "/docs/index.html#dam-export-seal",
+        "type": 301
+      },
+      {
+        "source": "/export-project",
+        "destination": "/docs/index.html#dam-export-project",
+        "type": 301
+      },
+      {
+        "source": "/import",
+        "destination": "/docs/index.html#dam-import",
+        "type": 301
+      },
+      {
+        "source": "/settings",
+        "destination": "/docs/index.html#dam-settings",
+        "type": 301
+      },
+      {
+        "source": "/destroy",
+        "destination": "/docs/index.html#dam-destroy",
+        "type": 301
+      },
+      {
+        "source": "/profiles",
+        "destination": "/docs/index.html#profiles",
+        "type": 301
+      },
+      {
+        "source": "/purities",
+        "destination": "/docs/index.html#purities",
+        "type": 301
+      },
+      {
+        "source": "/vocabulary",
+        "destination": "/docs/index.html#vocabulary",
+        "type": 301
+      },
+      {
+        "source": "/workflows",
+        "destination": "/docs/index.html#workflows",
+        "type": 301
+      },
+      {
+        "source": "/faq",
+        "destination": "/docs/index.html#faq",
+        "type": 301
+      },
+      {
+        "source": "/whats-new",
+        "destination": "/docs/index.html#whats-new",
+        "type": 301
+      }
+    ],
+    "headers": [
+      {
+        "source": "/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          }
+        ]
+      }
+    ]
+  }
+}

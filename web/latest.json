@@ -1,0 +1,16 @@
+{
+  "version": "0.5.1",
+  "urgency": "medium",
+  "description": "Added secure checksum verification, interactive updater, and various CLI bug fixes.",
+  "whats_new_url": "https://dam-pcp.web.app/docs#whats-new",
+  "downloads": {
+    "windows": {
+      "url": "https://dam-pcp.web.app/downloads/dam-windows.zip",
+      "checksum": "9a05e623f56263c9ef1d9c56a3d0e22546782714ff5eb7667d1452bf55b6425b"
+    },
+    "linux": {
+      "url": "https://dam-pcp.web.app/downloads/dam-linux.zip",
+      "checksum": "743303c9328b5df6b17066941908c1e48fd8e6fc82308c585e9312a79151fe84"
+    }
+  }
+}

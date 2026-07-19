@@ -1,0 +1,139 @@
+Core Concepts
+
+Introduction: What DAM is and how it differs from plain version control.
+
+Philosophy: The water-infrastructure naming model (Reservoir, Stream, Seal, Flow).
+
+Core Vocabulary: DAM's own terms and definitions, standalone — not mapped against any other VCS.
+
+.purities & .impurities: Allowlist/blocklist rule files that control which files get collected.
+
+Project Profiles (dam.toml): Per-project config defining providers, setup commands, and named export profiles — one file powering environment checks and setup instructions for project exports.
+
+GitHub Integration: How dam sync authenticates natively with GitHub branches using the secure credential system.
+
+Getting Started
+
+Quick Start: Source a reservoir, define purities, collect, seal, and safely sync to GitHub.
+
+Common Workflows: Recipes for starting a project, saving changes, branching safely, rolling back, syncing to GitHub, and sharing a project.
+
+FAQ: Answers on seal vs. project export, sync vs. export, credential storage, legacy migration, collection clearing, destroy safety, rule conflicts, and encryption.
+
+Command Reference
+
+dam source: Initialize or upgrade a reservoir (and trigger credential migration).
+
+dam collect: Scan files into the collection area per purities/impurities rules.
+
+dam creds: Securely manage aliases for GitHub tokens, SSH keys, or generic secrets using OS Keychain or encrypted local vaults.
+
+dam inspect: View reservoir state, rule maps, or .dam archive metadata.
+
+dam drain: Clear the collection area.
+
+dam seal: Create an immutable snapshot from the collection area.
+
+dam timeline: Print the chronological history of seals.
+
+dam stream: Create or list streams.
+
+dam flow: Switch the active stream.
+
+dam apply: Restore the workspace to a given seal, with --preview.
+
+dam sync: Push or pull seal history to/from GitHub. Automatically retrieves auth parameters from the centralized credential store.
+
+dam export: Package a seal or an entire project for sharing.
+
+Export a Seal: Share one historical snapshot as .seal or .zip.
+
+Export a Project: Package the whole current project, including setup commands and provider metadata, as a portable .dam archive.
+
+dam import: Import a .seal, .zip, or .dam archive back into a reservoir.
+
+dam settings: View or change reservoir configuration (Note: github_token_path is deprecated/removed in v0.5.0 in favor of dam creds).
+
+dam destroy: Permanently remove or safely archive a reservoir.
+
+Release Notes
+
+What's New: v0.5.0 introduces Centralized Secure Credential Management (dam creds) integrated with OS Keychain & AES-256-GCM encrypted local vaults. Includes automatic migration pipelines (dam source --upgrade) for legacy credentials and deprecates plain-text configuration variables.
+
+Downloads
+
+Installation: Linux (tar.gz via curl) and Windows (.zip via PowerShell or Command Prompt/curl) standalone binaries.
+
+Optional
+
+docs/index.html full reference: Single-page documentation containing all sections above with full command syntax, options, and examples.
+
+DAM
+
+DAM is a command-line Project Continuity Platform (PCP) — currently at v0.5.0, in Active Development (Alpha) — that uses its own independent vocabulary rather than Git's (e.g. "Reservoir", "Seal", "Stream", "Flow"; DAM is not a Git wrapper). It tracks, snapshots, and restores project state over time, packages an entire project — not just one snapshot — as a portable archive for handoff, and syncs a reservoir's history natively to and from GitHub branches.
+
+DAM is built for: saving checkpoints of in-progress work, branching off to try risky changes without losing working state, backing up and sharing history via stream-aware GitHub sync, merging divergent timelines safely, and packaging a clean, runnable copy of a project to send to another person or machine.
+
+Core Concepts
+
+Introduction: What DAM is and how it differs from plain version control.
+
+Philosophy: The water-infrastructure naming model (Reservoir, Stream, Seal, Flow).
+
+Core Vocabulary: DAM's own terms and definitions, standalone — not mapped against any other VCS.
+
+.purities & .impurities: Allowlist/blocklist rule files that control which files get collected.
+
+Project Profiles (dam.toml): Per-project config defining providers, setup commands, and named export profiles — one file powering environment checks and setup instructions for project exports.
+
+GitHub Integration: How dam sync maps local streams to remote branches, authenticates securely via credential manager aliases, and manages conflict resolutions.
+
+Getting Started
+
+Quick Start: Source a reservoir, define purities, collect, seal, and optionally sync to GitHub.
+
+Common Workflows: Recipes for starting a project, saving changes, branching safely, merging timelines, rolling back, syncing to GitHub, and sharing a project.
+
+FAQ: Answers on seal vs. project export, sync vs. export, 3-way merging, credential vaults, legacy migration, collection clearing, destroy safety, and encryption.
+
+Command Reference
+
+dam source: Initialize or upgrade a reservoir (auto-migrating legacy tokens).
+
+dam collect: Scan files into the collection area per purities/impurities rules.
+
+dam creds: Securely store, list, and delete credentials (GitHub tokens, SSH Keys, generic secrets) via OS Keychain or local encrypted vault.
+
+dam inspect: View reservoir state, rule maps, or .dam archive metadata.
+
+dam drain: Clear the collection area.
+
+dam seal: Create an immutable snapshot from the collection area.
+
+dam timeline: Print chronological history of seals or render the ASCII DAG visualizer (--graph).
+
+dam stream: Manage streams with rich continuity metadata, goals, notes, and subcommands (create, inspect, goal, notes, delete).
+
+dam flowinto: Switch the active stream context, with auto-snapshotting for unsealed staged changes.
+
+dam merge: [Experimental] Perform a smart 3-way merge between parallel development streams and apply the results into a multi-parent seal.
+
+dam apply: Restore the workspace to a given seal, with --preview.
+
+dam sync: Stream-aware push/pull sync to a cloud platform. Maps streams 1:1 with branch heads, protects the main stream, and resolves interactive ahead/behind diffs using stored credential aliases.
+
+dam export: Package a seal or an entire project for sharing.
+
+Export a Seal: Share one historical snapshot as .seal or .zip.
+
+Export a Project: Package the whole current project, including setup commands and provider metadata, as a portable .dam archive.
+
+dam import: Import a .seal, .zip, or .dam archive back into a reservoir.
+
+dam settings: View or change reservoir configuration, including rule-conflict resolution and local parameters. (Note: github_token_path has been deprecated in favor of the credentials suite).
+
+dam destroy: Permanently remove or safely archive a reservoir.
+
+Release Notes
+
+What's New: v0.5.0 introduces secure credential management (dam creds) via OS Keychain and AES-256-GCM local vaults (PBKDF2-SHA256, 100,000 iterations). Supports fine-grained tokens, classic tokens, SSH keys, and generic secrets. Delivers a safe migration pipeline via dam source --upgrade to clean legacy plaintext credentials.
