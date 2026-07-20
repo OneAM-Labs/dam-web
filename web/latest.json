@@ -1,0 +1,16 @@
+{
+  "version": "0.5.2",
+  "urgency": "urgent",
+  "description": "Fix for rule inheritance: explicit directory targeting (dam collect <target>) now correctly enforces parent .purities and .impurities rules, with added interactive override prompts",
+  "whats_new_url": "https://dam-pcp.web.app/docs#whats-new",
+  "downloads": {
+    "windows": {
+      "url": "https://dam-pcp.web.app/downloads/dam-windows.zip",
+      "checksum": "5a48fa0a5333fcc75e29968ae20cdfb983d9547ad673e6b789ba49a32d48aac2"
+    },
+    "linux": {
+      "url": "https://dam-pcp.web.app/downloads/dam-linux.zip",
+      "checksum": "5bffda146f94729d295952c8049470d2f7e1ca5bd8fcde80a64d0894d2fdc4ee"
+    }
+  }
+}
