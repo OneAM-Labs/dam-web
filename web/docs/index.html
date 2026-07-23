@@ -328,6 +328,7 @@
                 <a href="#dam-merge" class="sidebar-link">dam merge</a>
                 <a href="#dam-apply" class="sidebar-link">dam apply</a>
                 <a href="#dam-sync" class="sidebar-link">dam sync</a>
+                <a href="#dam-pr" class="sidebar-link">dam pr</a>
                 <a href="#dam-export" class="sidebar-link">dam export</a>
                 <a href="#dam-import" class="sidebar-link">dam import</a>
                 <a href="#dam-settings" class="sidebar-link">dam settings</a>
@@ -911,6 +912,27 @@ dam sync main --force                     # Bypass the protection warning when s
                 </div>
                 <p>See <a href="#github-integration">GitHub Integration</a> for how repository targeting and
                     authentication are configured.</p>
+
+                <h3 id="dam-pr">dam pr</h3>
+<p>Lists open pull requests from the configured GitHub repository, or checks out a pull request into its own local stream for inspection and development.</p>
+<pre><code>dam pr
+dam pr list
+dam pr checkout &lt;PR_NUMBER&gt;</code></pre>
+<pre><code>dam pr                         # Interactively list PRs and choose one to check out
+dam pr list                    # Just list open pull requests
+dam pr checkout 19             # Check out PR #19 directly into stream 'pr-19'</code></pre>
+<ul>
+    <li><code>dam pr</code> — Interactively lists open pull requests and lets you choose one to check out.</li>
+    <li><code>dam pr list</code> — Lists all open pull requests from the configured GitHub repository without checking one out.</li>
+    <li><code>dam pr checkout &lt;PR_NUMBER&gt;</code> — Downloads the head commit of the specified pull request into a brand new local stream named <code>pr-&lt;PR_NUMBER&gt;</code>.</li>
+</ul>
+<div class="callout">
+    <strong>Safe PR Checkout</strong>
+    <p>Checking out a pull request never modifies or replaces your existing streams. DAM creates a dedicated stream for the pull request so you can safely inspect, build, test, or collect changes from the contributor's work.</p>
+    <p>If your active stream contains uncommitted collected files, DAM will offer a safety seal before checking out the pull request, ensuring that local work cannot be lost during the checkout process.</p>
+</div>
+<p>Pull requests are fetched from the configured GitHub repository. See <a href="#github-integration">GitHub Integration</a> for how repository targeting and authentication are configured.</p>
+
 
                 <h3 id="dam-export">dam export</h3>
                 <p>Packages your project for sharing. There are two distinct modes.</p>
