@@ -290,7 +290,7 @@
                 </svg>
                 DAM Docs
                 <span
-                    style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.15rem 0.6rem; font-family: var(--font-mono); letter-spacing: 0;">v0.5.2</span>
+                    style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.15rem 0.6rem; font-family: var(--font-mono); letter-spacing: 0;">v0.5.3</span>
             </a>
             <a href="../index_main.html" class="btn-back">← Back to Site</a>
         </div>
@@ -1175,6 +1175,90 @@ dam apply seal_001</code></pre>
 
             <section id="whats-new">
                 <h2>What's New</h2>
+                <h3 id="whats-new-053">New: Pull Request Workflows</h3>
+<div class="callout">
+    <strong>Headline feature: Inspect source PRs in Isolated Local Streams</strong>
+    <p>
+        DAM now makes it easy to review and test open source pull requests locally with the new
+        <code>dam pr</code> command. Browse open PRs from your configured repository and check out
+        contributor changes into a brand-new isolated stream without touching your existing streams.
+    </p>
+</div>
+
+<h4>New: dam pr Command</h4>
+<p>
+    Use <code>dam pr</code> to interactively browse open pull requests, or use the available
+    subcommands to list PRs and check out a specific pull request directly.
+</p>
+
+<pre><code>dam pr                       # Interactively list PRs and choose one to check out
+dam pr list                  # List open pull requests
+dam pr checkout 19           # Check out PR #19 into stream 'pr-19'</code></pre>
+
+<h4>Isolated PR Streams</h4>
+<p>
+    Checking out a pull request never modifies your existing streams. DAM downloads the PR's head
+    commit into a brand-new stream, giving you a safe environment to inspect, build, and test
+    contributor changes locally.
+</p>
+
+<ul>
+    <li>
+        <strong>Browse Open Pull Requests:</strong>
+        Fetches open pull requests from your configured source and presents them for
+        interactive selection.
+    </li>
+    <li>
+        <strong>Dedicated PR Streams:</strong>
+        Every checked-out pull request is placed into a new isolated stream, keeping your existing
+        streams and work untouched.
+    </li>
+    <li>
+        <strong>Direct Checkout:</strong>
+        Check out a specific pull request by number with <code>dam pr checkout &lt;number&gt;</code>.
+        The PR is automatically placed into a dedicated stream such as <code>pr-19</code>.
+    </li>
+</ul>
+
+<h4>Safe Handling of Uncommitted Work</h4>
+<p>
+    DAM protects your local work before switching into a pull request stream. If your active stream
+    contains uncommitted collected files, you'll be offered a safety seal before the PR checkout
+    proceeds.
+</p>
+
+<pre><code># If your active stream has uncommitted collected files:
+
+⚠ Warning: Your active stream contains uncommitted collected files.
+
+A safety seal is required before checking out this pull request.
+This ensures your local work is preserved.
+
+Continue with safety seal? [Y/N]</code></pre>
+
+<ul>
+    <li>
+        <strong>Never Lose Local Work:</strong>
+        PR checkout cannot silently discard uncommitted collected files from your active stream.
+    </li>
+    <li>
+        <strong>Safety Seal Before Checkout:</strong>
+        When local work is detected, DAM gives you the opportunity to seal it before switching
+        streams.
+    </li>
+    <li>
+        <strong>Non-Destructive Workflow:</strong>
+        Your current stream remains intact while you inspect and test the contributor's changes.
+    </li>
+</ul>
+
+<h4>Review PRs Without Disrupting Your Workflow</h4>
+<p>
+    With <code>dam pr</code>, reviewing a contributor's work becomes a straightforward local
+    workflow: find an open PR, check it out into its own stream, inspect or build the changes,
+    and return to your existing work without mixing the two environments.
+</p>
+
                 <h3 id="whats-new-052">v0.5.2</h3>
                 <div class="callout">
                     <strong>Headline features: Strict Rule Inheritance & Interactive Target Overrides</strong>
