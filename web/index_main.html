@@ -215,7 +215,7 @@
                     <path d="M3 9h18M9 21V9" />
                 </svg>
                 DAM
-                <span style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.15rem 0.6rem; font-family: var(--font-mono); letter-spacing: 0;">v0.5.2</span>
+                <span style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.15rem 0.6rem; font-family: var(--font-mono); letter-spacing: 0;">v0.5.3</span>
             </a>
             <div class="nav-links">
                 <a href="#concepts">Concepts</a>
@@ -242,45 +242,62 @@
     </section>
 
 
-    <!-- What's New in v0.5.2 Section -->
+    <!-- What's New in v0.5.3 Section -->
 <section class="container" style="margin-bottom: 8rem;">
     <div class="section-header" style="position: relative;">
         <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem;">
             Latest Release
         </div>
-        <h2>What's New in v0.5.1-v0.5.2</h2>
-        <p>Smart Auto-Updates, robust path environment checking, and interactive warning suppression for a seamless developer experience.</p>
+        <h2>Review Pull Requests Locally</h2>
+        <p>Browse open pull requests and check out contributor changes into isolated local streams without risking your existing work.</p>
     </div>
- 
-    <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;">
-        <!-- Main Highlight Feature Card -->
-        <div class="card" style="background: linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-elevated) 100%); display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; align-items: center; padding: 2.5rem;">
-            
-            <div>
-                <div style="display: inline-block; padding: 0.2rem 0.6rem; background: rgba(255,255,255,0.08); border: 1px solid var(--border-subtle); border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-primary); margin-bottom: 1.25rem;">
-                    Developer Experience
-                </div>
-                <h3 style="font-size: 1.5rem; margin-bottom: 1rem; letter-spacing: -0.02em;">Smart Auto-Updates & Path Environment Checking</h3>
-                <p style="margin-bottom: 1.5rem; font-size: 0.9375rem;">
-                    v0.5.1 and v0.5.2 streamline CLI versioning with intelligent update management, robust file canonicalization for path verification, and interactive warning suppression — eliminating manual environment configuration.
-                </p>
-                <ul style="list-style: none; padding-left: 0; margin-bottom: 2rem; font-size: 0.875rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.75rem;">
-                    <li style="display: flex; align-items: flex-start; gap: 0.5rem;">
-                        <span style="color: var(--text-primary);">✓</span> <strong>Smart Auto-Updates</strong> — New <code>dam update</code> command with proactive cache synchronization and urgency-based prompts (Soft, Medium, Urgent). Background checks run automatically every 24 hours.
-                    </li>
-                    <li style="display: flex; align-items: flex-start; gap: 0.5rem;">
-                        <span style="color: var(--text-primary);">✓</span> <strong>Robust Path Verification</strong> — Enhanced file canonicalization prevents false positives from symlinks and identically named binaries in different directories, ensuring reliable PATH detection.
-                    </li>
-                    <li style="display: flex; align-items: flex-start; gap: 0.5rem;">
-                        <span style="color: var(--text-primary);">✓</span> <strong>Interactive Warning Suppression</strong> — Y/N prompts replace silent warnings. Permanently suppress PATH warnings in one interaction—no more manual environment variable exports needed.
-                    </li>
-                </ul>
-                <a href="docs/index.html#whats-new-051" class="btn btn-secondary" style="font-size: 0.8125rem;">View Full Release Notes →</a>
+
+
+<div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;">
+    <!-- Main Highlight Feature Card -->
+    <div class="card" style="background: linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-elevated) 100%); display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; align-items: center; padding: 2.5rem;">
+
+        <div>
+            <div style="display: inline-block; padding: 0.2rem 0.6rem; background: rgba(255,255,255,0.08); border: 1px solid var(--border-subtle); border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-primary); margin-bottom: 1.25rem;">
+                Pull Request Workflows
             </div>
- 
+
+            <h3 style="font-size: 1.5rem; margin-bottom: 1rem; letter-spacing: -0.02em;">
+                Inspect PRs Without Touching Your Work
+            </h3>
+
+            <p style="margin-bottom: 1.5rem; font-size: 0.9375rem;">
+                The new <code>dam pr</code> command makes it easy to browse open pull requests and check out contributor changes into isolated local streams, so you can inspect, test, and build PRs without disrupting your current work.
+            </p>
+
+            <ul style="list-style: none; padding-left: 0; margin-bottom: 2rem; font-size: 0.875rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.75rem;">
+                <li style="display: flex; align-items: flex-start; gap: 0.5rem;">
+                    <span style="color: var(--text-primary);">✓</span>
+                    <strong>List Open PRs</strong> — Fetch open pull requests from your configured source and interactively choose one to inspect.
+                </li>
+                <li style="display: flex; align-items: flex-start; gap: 0.5rem;">
+                    <span style="color: var(--text-primary);">✓</span>
+                    <strong>Isolated PR Streams</strong> — Check out any PR into a brand-new stream, keeping your existing streams untouched while you review contributor changes locally.
+                </li>
+                <li style="display: flex; align-items: flex-start; gap: 0.5rem;">
+                    <span style="color: var(--text-primary);">✓</span>
+                    <strong>Safe by Default</strong> — If your active stream contains uncommitted collected files, you'll be offered a safety seal before checkout, ensuring local work is never lost.
+                </li>
+            </ul>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; font-family: var(--font-mono); font-size: 0.8125rem;">
+                <code>dam pr</code>
+                <code>dam pr list</code>
+                <code>dam pr checkout 19</code>
+            </div>
         </div>
+
     </div>
+</div>
+
+
 </section>
+
 
 
     <!-- Concepts Grid -->
