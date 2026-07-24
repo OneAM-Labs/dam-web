@@ -215,7 +215,7 @@
                     <path d="M3 9h18M9 21V9" />
                 </svg>
                 DAM
-                <span style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.15rem 0.6rem; font-family: var(--font-mono); letter-spacing: 0;">v0.5.3</span>
+                <span style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.15rem 0.6rem; font-family: var(--font-mono); letter-spacing: 0;">v0.5.4</span>
             </a>
             <div class="nav-links">
                 <a href="#concepts">Concepts</a>
@@ -242,14 +242,14 @@
     </section>
 
 
-    <!-- What's New in v0.5.3 Section -->
+    <!-- What's New in v0.5.4 Section -->
 <section class="container" style="margin-bottom: 8rem;">
     <div class="section-header" style="position: relative;">
         <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem;">
             Latest Release
         </div>
-        <h2>Review Pull Requests Locally</h2>
-        <p>Browse open pull requests and check out contributor changes into isolated local streams without risking your existing work.</p>
+        <h2>Sealed File Safety in Apply & PR Checkout</h2>
+        <p>Protect your work by detecting unsaved changes before applying remote updates. DAM now verifies file hashes against your latest seal, warning you of any uncommitted modifications.</p>
     </div>
 
 
@@ -259,36 +259,36 @@
 
         <div>
             <div style="display: inline-block; padding: 0.2rem 0.6rem; background: rgba(255,255,255,0.08); border: 1px solid var(--border-subtle); border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-primary); margin-bottom: 1.25rem;">
-                Pull Request Workflows
+                File Integrity Protection
             </div>
 
             <h3 style="font-size: 1.5rem; margin-bottom: 1rem; letter-spacing: -0.02em;">
-                Inspect PRs Without Touching Your Work
+                Never Lose Unsealed Changes Again
             </h3>
 
             <p style="margin-bottom: 1.5rem; font-size: 0.9375rem;">
-                The new <code>dam pr</code> command makes it easy to browse open pull requests and check out contributor changes into isolated local streams, so you can inspect, test, and build PRs without disrupting your current work.
+                The <code>dam apply</code> and <code>dam pr checkout</code> commands now verify file integrity before applying remote changes. If your working directory contains unsealed modifications not captured in your latest seal, DAM warns you and prevents accidental data loss.
             </p>
 
             <ul style="list-style: none; padding-left: 0; margin-bottom: 2rem; font-size: 0.875rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.75rem;">
                 <li style="display: flex; align-items: flex-start; gap: 0.5rem;">
                     <span style="color: var(--text-primary);">✓</span>
-                    <strong>List Open PRs</strong> — Fetch open pull requests from your configured source and interactively choose one to inspect.
+                    <strong>Hash Verification</strong> — Automatically checks if current file hashes match those in your latest seal.
                 </li>
                 <li style="display: flex; align-items: flex-start; gap: 0.5rem;">
                     <span style="color: var(--text-primary);">✓</span>
-                    <strong>Isolated PR Streams</strong> — Check out any PR into a brand-new stream, keeping your existing streams untouched while you review contributor changes locally.
+                    <strong>Unsaved Changes Detection</strong> — Alerts you when modifications exist outside the sealed state before remote updates are applied.
                 </li>
                 <li style="display: flex; align-items: flex-start; gap: 0.5rem;">
                     <span style="color: var(--text-primary);">✓</span>
-                    <strong>Safe by Default</strong> — If your active stream contains uncommitted collected files, you'll be offered a safety seal before checkout, ensuring local work is never lost.
+                    <strong>Applies to Apply & PR Checkout</strong> — Both <code>dam apply</code> and <code>dam pr checkout</code> respect this safety mechanism.
                 </li>
             </ul>
 
             <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; font-family: var(--font-mono); font-size: 0.8125rem;">
-                <code>dam pr</code>
-                <code>dam pr list</code>
-                <code>dam pr checkout 19</code>
+                <code>dam apply</code>
+                <code>dam pr checkout</code>
+                <code>dam seal</code>
             </div>
         </div>
 
