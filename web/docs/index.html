@@ -290,7 +290,7 @@
                 </svg>
                 DAM Docs
                 <span
-                    style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.15rem 0.6rem; font-family: var(--font-mono); letter-spacing: 0;">v0.5.3</span>
+                    style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.15rem 0.6rem; font-family: var(--font-mono); letter-spacing: 0;">v0.5.4</span>
             </a>
             <a href="../index_main.html" class="btn-back">← Back to Site</a>
         </div>
@@ -1197,6 +1197,103 @@ dam apply seal_001</code></pre>
 
             <section id="whats-new">
                 <h2>What's New</h2>
+
+<h3 id="whats-new-054">New: File Integrity Protection</h3>
+
+<div class="callout">
+    <strong>Headline feature: Prevent Accidental Loss of Unsealed Work</strong>
+    <p>
+        DAM now verifies your working directory before applying remote changes.
+        Both <code>dam apply</code> and <code>dam pr checkout</code> compare your
+        current files against your latest seal and stop the operation if unsealed
+        modifications are detected, ensuring your work is never overwritten unexpectedly.
+    </p>
+</div>
+
+<h4>Automatic Integrity Verification</h4>
+
+<p>
+    Before applying remote changes, DAM performs a complete integrity check against
+    the latest seal. If any tracked file has been modified outside of the sealed state,
+    the operation is halted and you're notified before any changes are applied.
+</p>
+
+<pre><code>dam apply
+dam pr checkout 19
+dam seal</code></pre>
+
+<h4>Protecting Your Local Changes</h4>
+
+<p>
+    Remote updates should never silently overwrite work you've forgotten to seal.
+    DAM now detects these situations automatically and asks you to preserve your
+    changes before continuing.
+</p>
+
+<ul>
+    <li>
+        <strong>Hash Verification:</strong>
+        Every tracked file is compared against the hashes stored in your latest
+        seal before remote changes are applied.
+    </li>
+
+    <li>
+        <strong>Detect Unsealed Modifications:</strong>
+        Files changed after your most recent seal are detected immediately,
+        preventing accidental overwrites.
+    </li>
+
+    <li>
+        <strong>Automatic Safety Checks:</strong>
+        The protection runs automatically whenever remote content is about to
+        modify your working directory.
+    </li>
+</ul>
+
+<h4>Applies to Remote Operations</h4>
+
+<p>
+    This protection is built into every command capable of replacing local files
+    with remote content.
+</p>
+
+<ul>
+    <li>
+        <strong><code>dam apply</code>:</strong>
+        Verifies your working directory before applying incoming changes.
+    </li>
+
+    <li>
+        <strong><code>dam pr checkout</code>:</strong>
+        Performs the same integrity verification before checking out a pull request
+        into your local workspace.
+    </li>
+
+    <li>
+        <strong>Consistent Safety:</strong>
+        The same integrity mechanism protects both workflows, giving predictable
+        behavior across DAM.
+    </li>
+</ul>
+
+<h4>Example Warning</h4>
+
+<pre><code>⚠ Unsealed changes detected.
+
+Your working directory no longer matches your latest seal.
+
+Applying remote changes now could overwrite local work.
+
+Run 'dam seal' to preserve your changes before continuing.</code></pre>
+
+<h4>Never Lose Unsealed Changes Again</h4>
+
+<p>
+    File Integrity Protection adds an extra layer of safety to collaborative
+    workflows. By verifying your working directory before remote operations,
+    DAM helps ensure that forgotten local edits remain protected until you've
+    intentionally sealed them.
+</p>
                 <h3 id="whats-new-053">New: Pull Request Workflows</h3>
 <div class="callout">
     <strong>Headline feature: Inspect source PRs in Isolated Local Streams</strong>
@@ -1437,6 +1534,38 @@ dam creds delete github_token           # Remove a credential</code></pre>
                         <code>dam source --upgrade</code> to migrate your credentials to the new secure system.
                     </p>
                 </div>
+
+                <h3 id="whats-new-054">v0.5.4</h3>
+                <div class="callout">
+                    <strong>Headline feature: Sealed File Integrity Safety</strong>
+                    <p>v0.5.4 introduces critical safety mechanisms to <code>dam apply</code> and <code>dam pr checkout</code>. Before applying remote changes, DAM now verifies that your working directory files match those sealed in your latest seal. If unsealed modifications are detected, you are warned and given the choice to seal first or abort.</p>
+                </div>
+
+                <h4>New: File Hash Verification in Apply Commands</h4>
+                <p>The <code>dam apply</code> and <code>dam pr checkout</code> commands now perform file integrity checks before applying remote updates. Each file in your working directory is hashed and compared against the hashes stored in your latest sealed state.</p>
+                <ul>
+                    <li><strong>Unsealed Changes Detection:</strong> If any file hash differs from what was sealed, DAM flags the difference and prevents apply until you resolve it—either by sealing the changes or discarding them.</li>
+                    <li><strong>Clear Warnings:</strong> You see exactly which files have been modified outside the sealed snapshot, making it easy to decide whether to commit the work or revert.</li>
+                    <li><strong>Applies to Both Commands:</strong> Both <code>dam apply</code> (for applying seals from other streams) and <code>dam pr checkout</code> (for testing PR branches) respect this safety check.</li>
+                </ul>
+                <pre><code>dam apply feature-branch              # Hash check performed; warns if unsealed changes exist
+dam pr checkout 42                  # Prevents checkout if working directory has uncommitted modifications
+dam seal "Work in progress"         # Seal your changes before applying remote updates</code></pre>
+
+                <h4>GitHub Integration Now Uses Credentials Manager</h4>
+                <p>The legacy <code>github_token_path</code> reservoir setting has been fully deprecated in favor of DAM's secure credentials manager. When you run <code>dam sync</code> or any GitHub-integrated command, DAM reads from the structured <code>.dam/credentials.json</code> file (with fallback support for <code>.dam/credentials</code>).</p>
+                <ul>
+                    <li><strong>Interactive Credential Setup:</strong> If no credentials are found, an interactive wizard guides you through storing a Fine-Grained Personal Access Token, Classic Token, or SSH key path securely.</li>
+                    <li><strong>No More Legacy JSON Config:</strong> The old <code>github_token_path</code> setting in your reservoir configuration is ignored. All GitHub authentication now flows through the credentials manager.</li>
+                    <li><strong>Cleaner Repository Settings:</strong> Repository targeting remains in <code>dam.toml</code> (via <code>github_repo</code>), while authentication lives exclusively in the credentials store.</li>
+                </ul>
+
+                <div class="callout">
+                    <strong>Breaking change: Legacy github_token_path Setting Removed</strong>
+                    <p>The <code>github_token_path</code> reservoir setting is no longer recognized. DAM now enforces use of the credentials manager. If you are using the old setting, migrate your token to <code>.dam/credentials.json</code> using the interactive setup wizard.</p>
+                </div>
+
+                <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 3rem 0;">
 
                 <h3 id="whats-new-040">v0.4.1</h3>
                 <div class="callout">

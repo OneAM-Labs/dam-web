@@ -1,16 +1,16 @@
 {
-  "version": "0.5.3",
-  "urgency": "medium",
-  "description": "Fix for rule inheritance: explicit directory targeting (dam collect <target>) now correctly enforces parent .purities and .impurities rules, with added interactive override prompts",
+  "version": "0.5.4",
+  "urgency": "urgent",
+  "description": "File Integrity Protection: DAM now verifies your working directory before dam apply and dam pr checkout, preventing remote changes from overwriting unsealed local modifications.",
   "whats_new_url": "https://dam-pcp.web.app/docs#whats-new",
   "downloads": {
     "windows": {
       "url": "https://dam-pcp.web.app/downloads/dam-windows.zip",
-      "checksum": "85065747161aea315bbdc138156b0d5b594659ef53e427a4a80653a1e77091ab"
+      "checksum": "27f3ef2f7f26c4d06de7086f8f37e5f5b0b16d103fc80d7981ef49f5bdd1db8e"
     },
     "linux": {
       "url": "https://dam-pcp.web.app/downloads/dam-linux.zip",
-      "checksum": "4cacb39fb6e2d30a8f4e92f3c28aeb743ca2e97dd0d4103e01f2e2c33f7ea299"
+      "checksum": "ef149c3cb962d35d2997a87f9b37afc3af5ae1c179ea1e2022aceadd101439b1"
     }
   }
 }
