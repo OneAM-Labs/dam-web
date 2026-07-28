@@ -290,7 +290,7 @@
                 </svg>
                 DAM Docs
                 <span
-                    style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.15rem 0.6rem; font-family: var(--font-mono); letter-spacing: 0;">v0.5.4</span>
+                    style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.15rem 0.6rem; font-family: var(--font-mono); letter-spacing: 0;">v0.5.5</span>
             </a>
             <a href="../index_main.html" class="btn-back">← Back to Site</a>
         </div>
@@ -1014,9 +1014,16 @@ dam settings &lt;KEY&gt; &lt;VALUE&gt;              # Update one setting directl
                                 See <a href="#github-integration">GitHub Integration</a>.</td>
                         </tr>
                         <tr>
-                            <td><code>github_token_path</code></td>
-                            <td>Optional path to a file containing your GitHub access token, used instead of the
-                                default <code>.dam/credentials</code> location.</td>
+                            <td><code>github_cred_alias</code></td>
+                            <td>Credential alias for GitHub authentication. References a credential stored in the vault via <code>dam creds</code>. If unset, DAM uses interactive prompts.</td>
+                        </tr>
+                        <tr>
+                            <td><code>disable_overwrite_check</code></td>
+                            <td>If <code>true</code>, skips the file hash verification safety check in <code>dam apply</code> and <code>dam pr checkout</code>. Use with caution.</td>
+                        </tr>
+                        <tr>
+                            <td><code>overwrite_check_exclude</code></td>
+                            <td>Comma-separated list of file paths to always skip the overwrite check for. Useful for excluding generated or environment-specific files from integrity verification.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1534,6 +1541,70 @@ dam creds delete github_token           # Remove a credential</code></pre>
                         <code>dam source --upgrade</code> to migrate your credentials to the new secure system.
                     </p>
                 </div>
+
+                <h3 id="whats-new-055">v0.5.5</h3>
+                <div class="callout">
+                    <strong>Enhanced Safety Controls &amp; Settings Refinement</strong>
+                    <p>v0.5.5 refines the overwrite safety mechanism introduced in v0.5.4, giving you fine-grained control over file integrity checks. A new credential alias setting streamlines GitHub authentication, and the settings system now supports excludelist-based validation patterns.</p>
+                </div>
+
+                <h4>New: Granular Overwrite Check Control</h4>
+                <p>
+                    While the file hash verification system in <code>dam apply</code> and <code>dam pr checkout</code> protects most workflows,
+                    some projects have files that are intentionally generated or environment-specific. v0.5.5 introduces targeted control:
+                </p>
+                <ul>
+                    <li>
+                        <strong><code>disable_overwrite_check</code>:</strong>
+                        Set to <code>true</code> to skip hash verification entirely for this reservoir. Useful for isolated development or projects
+                        where generated files should not block apply operations.
+                    </li>
+                    <li>
+                        <strong><code>overwrite_check_exclude</code>:</strong>
+                        Comma-separated list of paths to always skip the check for. For example: <code>build/,node_modules/,.env</code> exempts
+                        those paths from integrity verification while preserving protection for critical source files.
+                    </li>
+                    <li>
+                        <strong>Per-File Flexibility:</strong>
+                        Exclude paths by file name or directory prefix. DAM respects both exact matches and prefix patterns.
+                    </li>
+                </ul>
+
+                <pre><code>dam settings disable_overwrite_check true              # Disable the check entirely
+dam settings overwrite_check_exclude "build/,node_modules/"  # Exclude specific paths
+dam apply seal_001                                   # Apply without hash verification on excluded files</code></pre>
+
+                <h4>Simplified GitHub Authentication with Credential Aliases</h4>
+                <p>
+                    The legacy <code>github_token_path</code> setting is fully removed in v0.5.5.
+                    Authentication now flows exclusively through the credentials manager via the <code>github_cred_alias</code> setting.
+                </p>
+                <ul>
+                    <li>
+                        <strong>Credential Alias Setting:</strong>
+                        <code>dam settings github_cred_alias my_token</code> points to a credential stored via <code>dam creds create --alias my_token</code>.
+                    </li>
+                    <li>
+                        <strong>Zero Configuration Default:</strong>
+                        If <code>github_cred_alias</code> is unset, DAM uses interactive prompts to guide you through credential creation on first use.
+                    </li>
+                    <li>
+                        <strong>Consistent with dam sync:</strong>
+                        The same credential system used by <code>dam sync</code> now applies uniformly across all GitHub operations.
+                    </li>
+                </ul>
+
+                <pre><code>dam creds create --alias my_github --vault     # Create and encrypt a credential
+dam settings github_cred_alias my_github           # Point this reservoir to the credential
+dam sync                                            # Uses the credential automatically</code></pre>
+
+                <h4>Updated Settings Schema</h4>
+                <p>
+                    The <code>dam settings</code> command now exposes these new keys. The interactive menu and programmatic interfaces
+                    both support the full configuration surface.
+                </p>
+                <pre><code>dam settings --interactive                       # Interactive dashboard with all new options
+dam settings overwrite_check_exclude "app/gen/"    # Exclude specific paths from safety checks</code></pre>
 
                 <h3 id="whats-new-054">v0.5.4</h3>
                 <div class="callout">

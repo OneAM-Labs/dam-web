@@ -1,16 +1,16 @@
 {
-  "version": "0.5.4",
-  "urgency": "urgent",
-  "description": "File Integrity Protection: DAM now verifies your working directory before dam apply and dam pr checkout, preventing remote changes from overwriting unsealed local modifications.",
+  "version": "0.5.5",
+  "urgency": "medium",
+  "description": "File Integrity Protection from 0.5.4 now has override settings for more user control.",
   "whats_new_url": "https://dam-pcp.web.app/docs#whats-new",
   "downloads": {
     "windows": {
       "url": "https://dam-pcp.web.app/downloads/dam-windows.zip",
-      "checksum": "27f3ef2f7f26c4d06de7086f8f37e5f5b0b16d103fc80d7981ef49f5bdd1db8e"
+      "checksum": "61418e5a1d6891adfcff142cd1ff65727f9e2cff3622304039b625c58bd335de"
     },
     "linux": {
       "url": "https://dam-pcp.web.app/downloads/dam-linux.zip",
-      "checksum": "ef149c3cb962d35d2997a87f9b37afc3af5ae1c179ea1e2022aceadd101439b1"
+      "checksum": "9af4a8a9432db381ca8ac4ab4122b269cc5004a4493a57f6c023cd17bad52f79"
     }
   }
 }
