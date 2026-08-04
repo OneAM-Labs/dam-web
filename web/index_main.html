@@ -215,7 +215,7 @@
                     <path d="M3 9h18M9 21V9" />
                 </svg>
                 DAM
-                <span style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.15rem 0.6rem; font-family: var(--font-mono); letter-spacing: 0;">v0.5.5</span>
+                <span style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.15rem 0.6rem; font-family: var(--font-mono); letter-spacing: 0;">v0.6.0</span>
             </a>
             <div class="nav-links">
                 <a href="#concepts">Concepts</a>
@@ -247,14 +247,14 @@
     </section>
 
 
-    <!-- What's New in v0.5.4 Section -->
+    <!-- What's New in v0.6.0 Section -->
 <section class="container" style="margin-bottom: 8rem;">
     <div class="section-header" style="position: relative;">
         <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem;">
             Latest Release
         </div>
-        <h2>Sealed File Safety in Apply & PR Checkout</h2>
-        <p>Protect your work by detecting unsaved changes before applying remote updates. DAM now verifies file hashes against your latest seal, warning you of any uncommitted modifications.</p>
+        <h2>Massive v0.6.0 upgrade: Import, Sync, Releases & Sharing</h2>
+        <p>v0.6.0 introduces network and Git import workflows, release/stable management, `dam apply --latest`, `dam sync --releases`, proper clone loading, and richer project export/sharing through `dam.toml` profiles.</p>
     </div>
 
 
@@ -264,36 +264,36 @@
 
         <div>
             <div style="display: inline-block; padding: 0.2rem 0.6rem; background: rgba(255,255,255,0.08); border: 1px solid var(--border-subtle); border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-primary); margin-bottom: 1.25rem;">
-                File Integrity Protection
+                Latest Release: v0.6.0
             </div>
 
             <h3 style="font-size: 1.5rem; margin-bottom: 1rem; letter-spacing: -0.02em;">
-                Never Lose Unsealed Changes Again
+                Import anywhere, share smarter, sync with release metadata
             </h3>
 
             <p style="margin-bottom: 1.5rem; font-size: 0.9375rem;">
-                The <code>dam apply</code> and <code>dam pr checkout</code> commands now verify file integrity before applying remote changes. If your working directory contains unsealed modifications not captured in your latest seal, DAM warns you and prevents accidental data loss.
+                v0.6.0 adds remote DAM archive imports, Git repo clone-to-DAM conversion, release and stable version workflows, and `dam sync --releases` for publishable metadata sync.
             </p>
 
             <ul style="list-style: none; padding-left: 0; margin-bottom: 2rem; font-size: 0.875rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.75rem;">
                 <li style="display: flex; align-items: flex-start; gap: 0.5rem;">
                     <span style="color: var(--text-primary);">✓</span>
-                    <strong>Hash Verification</strong> — Automatically checks if current file hashes match those in your latest seal.
+                    <strong>Network Import</strong> — `dam import https://example.com/project.dam` downloads and imports a shared archive directly.
                 </li>
                 <li style="display: flex; align-items: flex-start; gap: 0.5rem;">
                     <span style="color: var(--text-primary);">✓</span>
-                    <strong>Unsaved Changes Detection</strong> — Alerts you when modifications exist outside the sealed state before remote updates are applied.
+                    <strong>Git Clone Conversion</strong> — `dam import https://github.com/user/repo.git` bootstraps a DAM reservoir from a Git repo.
                 </li>
                 <li style="display: flex; align-items: flex-start; gap: 0.5rem;">
                     <span style="color: var(--text-primary);">✓</span>
-                    <strong>Applies to Apply & PR Checkout</strong> — Both <code>dam apply</code> and <code>dam pr checkout</code> respect this safety mechanism.
+                    <strong>Release & Stable Tags</strong> — Manage named releases and stream-stable labels for production-ready handoffs.
                 </li>
             </ul>
 
             <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; font-family: var(--font-mono); font-size: 0.8125rem;">
-                <code>dam apply</code>
-                <code>dam pr checkout</code>
-                <code>dam seal</code>
+                <code>dam import</code>
+                <code>dam sync --releases</code>
+                <code>dam stable assign</code>
             </div>
         </div>
 
@@ -411,6 +411,12 @@
 unzip dam-linux.zip
 chmod +x dam
 sudo mv dam /usr/local/bin/</pre>
+
+    <pre class="code-block"># Arch Linux / AUR
+paru -S dam
+# or
+yay -S dam
+</pre>
 
     <a href="https://dam-pcp.web.app/downloads/dam-linux.zip"
        class="btn btn-secondary"

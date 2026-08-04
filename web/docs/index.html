@@ -290,7 +290,7 @@
                 </svg>
                 DAM Docs
                 <span
-                    style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.15rem 0.6rem; font-family: var(--font-mono); letter-spacing: 0;">v0.5.5</span>
+                    style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.15rem 0.6rem; font-family: var(--font-mono); letter-spacing: 0;">v0.6.0</span>
             </a>
             <a href="../index_main.html" class="btn-back">← Back to Site</a>
         </div>
@@ -331,6 +331,8 @@
                 <a href="#dam-pr" class="sidebar-link">dam pr</a>
                 <a href="#dam-export" class="sidebar-link">dam export</a>
                 <a href="#dam-import" class="sidebar-link">dam import</a>
+                <a href="#dam-releases" class="sidebar-link">dam releases</a>
+                <a href="#dam-stable" class="sidebar-link">dam stable</a>
                 <a href="#dam-settings" class="sidebar-link">dam settings</a>
                 <a href="#dam-destroy" class="sidebar-link">dam destroy</a>
                 <a href="#dam-update" class="sidebar-link">dam update</a>
@@ -547,7 +549,19 @@ exclude = [".env", "*.log"]
 [profiles.contributor]
 description = "Safe to hand to an external contributor"
 include = ["lib/**", "pubspec.yaml", "README.md"]
-exclude = [".env", "**/secrets/**"]</code></pre>
+exclude = [".env", "**/secrets/**"]
+
+streams = ["main", "feature-login"]
+
+releases= ["v1.0.0"]
+
+stable = ["v1.0.0"]
+
+</code></pre>
+
+                <p><strong>How to use it:</strong> Place this file in your project root, then run <code>dam export project my-app --profile contributor</code>. DAM will package the selected files, provider metadata, and setup commands into a sharable <code>.dam</code> archive.</p>
+                <p>The optional <code>streams</code>, <code>releases</code>, and <code>stable</code> sections help document which channel is recommended for consumers, which release is current, and which stream is production-ready.</p>
+                <p><strong>Tip:</strong> Use separate profiles when you want a full internal archive and a trimmed contributor archive from the same project.</p>
 
                 <p><strong>Providers</strong> are project-type templates that come with sensible defaults, driving two
                     things automatically from that single config:</p>
@@ -913,6 +927,16 @@ dam sync main --force                     # Bypass the protection warning when s
                 <p>See <a href="#github-integration">GitHub Integration</a> for how repository targeting and
                     authentication are configured.</p>
 
+                <h4>New: release-aware sync</h4>
+                <p><code>dam sync --releases</code> synchronizes release metadata and artifacts in addition to standard stream history, allowing named releases to be propagated alongside your active streams.</p>
+                <pre><code>dam sync --releases
+# Sync stream history and any tagged release metadata to the configured platform</code></pre>
+
+                <h4>New: clone source import</h4>
+                <p><code>dam sync --clone</code> can import a remote Git repository directly and convert it into a DAM reservoir as part of a sync workflow.</p>
+                <pre><code>dam sync --clone https://github.com/user/repo.git
+# Clone the remote repo and convert it into a DAM repository for synchronization</code></pre>
+
                 <h3 id="dam-pr">dam pr</h3>
 <p>Lists open pull requests from the configured GitHub repository, or checks out a pull request into its own local stream for inspection and development.</p>
 <pre><code>dam pr
@@ -946,15 +970,17 @@ dam export seal seal_001 --zip  # Plain .zip of the raw files, for general use</
                 <h4 id="dam-export-project">Export a Project</h4>
                 <p>Package your <em>entire current project</em> — not just one snapshot — into a portable
                     <code>.dam</code> archive that includes setup instructions and metadata, ready to hand off to
-                    someone else.
-                </p>
+                    someone else.</p>
                 <pre><code>dam export project &lt;PROJECT_NAME&gt; [--profile &lt;PROFILE&gt;]</code></pre>
                 <pre><code>dam export project my-app --profile contributor</code></pre>
                 <p>This uses the include/exclude rules and setup commands defined in your project's
                     <code>dam.toml</code> profile (see <a href="#profiles">Project Profiles</a>). If your reservoir is
                     configured to require a password for project exports, you'll be prompted to set one, and the
-                    archive will be encrypted.
-                </p>
+                    archive will be encrypted.</p>
+                <p>Project export is now a true sharing category: use <code>dam.toml</code> to define provider settings,
+                    export profiles, and recommended branches or release/stable assignments for consumers of the
+                    archive. This makes it easier to hand off specific branches, release-ready snapshots, or
+                    stabilized streams to another machine.</p>
 
                 <h3 id="dam-import">dam import</h3>
                 <p>Imports a previously exported archive back into a reservoir.</p>
@@ -973,6 +999,50 @@ dam import shared-app.dam</code></pre>
                 <p>If the imported project includes custom setup commands, DAM writes them to a reviewable script
                     rather than running them automatically, so you can check what they do first.</p>
 
+                <h3 id="dam-releases">dam releases</h3>
+                <p>Manage named release snapshots independently from stream history. A release is a stable, versioned checkpoint you can reference, export, or sync with a cloud provider.</p>
+                <pre><code>dam releases create v1.0.0 --latest --stream main
+# Create release v1.0.0 from the current stream and mark it as the latest release
+
+dam releases list
+# Show all defined releases
+
+dam releases inspect --latest
+# Display metadata for the release currently marked as latest
+
+dam releases delete v1.0.0
+# Remove the named release from local storage</code></pre>
+                <ul>
+                    <li><code>dam releases create &lt;NAME&gt;</code> — Capture the current stream's latest seal as a named release.</li>
+                    <li><code>--stream</code> — Optionally create the release from a different stream than the current one.</li>
+                    <li><code>--latest</code> — Mark this new release as the current latest release pointer.</li>
+                    <li><code>dam releases list</code> — Show all releases and their associated stream, seal, and tags.</li>
+                    <li><code>dam releases inspect --latest</code> — Inspect the release currently designated as latest without needing its explicit name.</li>
+                    <li><code>dam releases delete &lt;NAME&gt;</code> — Remove a release metadata entry; this does not delete seals or streams.</li>
+                </ul>
+                <h3 id="dam-stable">dam stable</h3>
+                <p>Assign stable version labels to streams for production-ready or long-lived branches. Stable labels are stream-scoped and indicate which stream state is considered the recommended stable version.</p>
+                <pre><code>dam stable assign v1.0.0 --latest --stream main
+# Tag the main stream with stable version v1.0.0 and make it the latest stable for main
+
+dam stable list
+# Show all stable assignments across streams
+
+dam stable inspect --latest
+# Show the latest stable label for the currently active stream
+
+dam stable remove v1.0.0
+# Remove the stable label from the stream metadata without deleting the stream</code></pre>
+                <ul>
+                    <li><code>dam stable assign &lt;VERSION&gt;</code> — Attach a stable label to the current or specified stream.</li>
+                    <li><code>--stream</code> — Optionally assign the stable label to a stream other than the current one.</li>
+                    <li><code>--latest</code> — Mark this stable version as the latest stable pointer for the targeted stream.</li>
+                    <li><code>dam stable list</code> — Show all streams with stable labels and their assigned version names.</li>
+                    <li><code>dam stable inspect --latest</code> — Inspect the latest stable version for the active stream.</li>
+                    <li><code>dam stable remove &lt;VERSION&gt;</code> — Remove a stable label from your stream metadata.
+                    </li>
+                </ul>
+                <p>Use releases for named distribution checkpoints and stable labels for long-lived branch readiness. Together, they help you share clear project handoff points and production-expected stream states.</p>
                 <h3 id="dam-settings">dam settings</h3>
                 <p>View or change your reservoir's configuration.</p>
                 <pre><code>dam settings                            # Print all current settings
@@ -1489,6 +1559,22 @@ $ dam collect .
 ✓ Collection complete</code></pre>
 
                 <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 3rem 0;">
+
+                <h3 id="whats-new-060">v0.6.0</h3>
+                <div class="callout">
+                    <strong>Massive continuity upgrade</strong>
+                    <p>v0.6.0 introduces network and Git imports, release and stable workflows, clone-based sync loading, <code>dam apply --latest</code>, and richer project sharing through <code>dam.toml</code>.</p>
+                </div>
+                <h4>New: network and Git-powered import</h4>
+                <p><code>dam import</code> now accepts remote <code>.dam</code> URLs and Git repository URLs, automatically bootstrapping a local DAM reservoir from remote sources.</p>
+                <h4>New: release and stable workflows</h4>
+                <p>Named releases and stable labels allow you to share versioned snapshots and stream-ready releases independently from active stream history.</p>
+                <h4>New: project sharing via dam.toml</h4>
+                <p><code>dam export project</code> now supports sharing recommended branch and release/stable assignments, making it easier to export specific channels of work for collaborators.</p>
+                <h4>New: sync improvements</h4>
+                <p><code>dam sync --releases</code> synchronizes release metadata, while <code>dam sync --clone</code> loads a remote Git repo and converts it into DAM structure before syncing.</p>
+                <h4>New: apply latest</h4>
+                <p><code>dam apply --latest</code> restores the latest seal from the current stream, and <code>dam apply --latest-global</code> restores the latest seal across all streams.</p>
 
                 <h3 id="whats-new-050">v0.5.0</h3>
                 <div class="callout">

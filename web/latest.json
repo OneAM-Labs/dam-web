@@ -1,16 +1,16 @@
 {
-  "version": "0.5.5",
-  "urgency": "medium",
-  "description": "File Integrity Protection from 0.5.4 now has override settings for more user control.",
+  "version": "0.6.0",
+  "urgency": "urgent",
+  "description": "Upgraded docs, website, README, and llms guidance for v0.6.0 with network/Git import, release/stable workflows, clone-aware sync, dam apply --latest, AUR install support, and enhanced project sharing.",
   "whats_new_url": "https://dam-pcp.web.app/docs#whats-new",
   "downloads": {
     "windows": {
       "url": "https://dam-pcp.web.app/downloads/dam-windows.zip",
-      "checksum": "61418e5a1d6891adfcff142cd1ff65727f9e2cff3622304039b625c58bd335de"
+      "checksum": "3c59ec7132458639acb23d65209b245769147ba1e8cdd0a696c7f411d0234296"
     },
     "linux": {
       "url": "https://dam-pcp.web.app/downloads/dam-linux.zip",
-      "checksum": "9af4a8a9432db381ca8ac4ab4122b269cc5004a4493a57f6c023cd17bad52f79"
+      "checksum": "c4b7160b804911e06357a6ce508227fb70687970e20be81d54cac9456dd915ea"
     }
   }
 }
