@@ -1,4 +1,4 @@
-DAM — Project Continuity Platform v0.6.0
+DAM — Project Continuity Platform v0.6.1
 
 DAM is a CLI-based Project Continuity Platform (PCP) written in Rust. Unlike Git, DAM uses its own independent vocabulary (Reservoir, Stream, Seal, Flow) and architecture, though it fully interoperates with Git. DAM tracks, snapshots, and restores project state; packages projects with setup automation; manages releases and stable versions independently; and syncs via GitHub branches natively.
 
@@ -28,7 +28,7 @@ Export/Import: Package a seal or entire project as a portable `.dam`, `.seal`, o
 
 Sync: Push/pull seal history and file objects to/from GitHub. Streams map 1:1 to branch heads.
 
-COMMAND REFERENCE (v0.6.0)
+COMMAND REFERENCE (v0.6.1)
 
 dam source [OPTIONS]
   Initialize or upgrade a reservoir in the current directory.
@@ -476,7 +476,7 @@ Problem: Overwrite conflict during apply
 Problem: Can't merge streams
   Solution: dam merge source-stream --apply (merge is experimental; use with caution)
 
-RELEASE NOTES (v0.6.0)
+RELEASE NOTES (v0.6.1)
 
 Major Additions:
 - Releases: Named, distributable version snapshots independent of stream history

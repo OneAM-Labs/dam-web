@@ -1,16 +1,16 @@
 {
-  "version": "0.6.0",
+  "version": "0.6.1",
   "urgency": "urgent",
-  "description": "Upgraded docs, website, README, and llms guidance for v0.6.0 with network/Git import, release/stable workflows, clone-aware sync, dam apply --latest, AUR install support, and enhanced project sharing.",
+  "description": "Upgraded docs, website, README, and llms guidance for v0.6.1 with network/Git import, release/stable workflows, clone-aware sync, dam apply --latest, AUR install support, and enhanced project sharing.",
   "whats_new_url": "https://dam-pcp.web.app/docs#whats-new",
   "downloads": {
     "windows": {
       "url": "https://dam-pcp.web.app/downloads/dam-windows.zip",
-      "checksum": "3c59ec7132458639acb23d65209b245769147ba1e8cdd0a696c7f411d0234296"
+      "checksum": "82f4680c8cebf6e30be6065e0a4c6ef5701d3f6957664bb9a2ce278a665db45c"
     },
     "linux": {
       "url": "https://dam-pcp.web.app/downloads/dam-linux.zip",
-      "checksum": "c4b7160b804911e06357a6ce508227fb70687970e20be81d54cac9456dd915ea"
+      "checksum": "faccf0fa89927da7873a1d4551640dff60f8d9eb53058ff037cb88d2b3d00c04"
     }
   }
 }
