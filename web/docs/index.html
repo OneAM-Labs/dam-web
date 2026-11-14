@@ -290,7 +290,7 @@
                 </svg>
                 DAM Docs
                 <span
-                    style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.15rem 0.6rem; font-family: var(--font-mono); letter-spacing: 0;">v0.6.1</span>
+                    style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.15rem 0.6rem; font-family: var(--font-mono); letter-spacing: 0;">v0.6.3</span>
             </a>
             <a href="../index_main.html" class="btn-back">← Back to Site</a>
         </div>
@@ -1274,6 +1274,28 @@ dam apply seal_001</code></pre>
 
             <section id="whats-new">
                 <h2>What's New</h2>
+<hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 3rem 0;">
+                <h3 id="whats-new-061">v0.6.1</h3>
+                <div class="callout">
+                    <strong>Update System Bug Patch</strong>
+                    <p>v0.6.1 includes update related bug fixes and performance improvements across all features.</p>
+                </div>
+                <h3 id="whats-new-060">v0.6.0</h3>
+                <div class="callout">
+                    <strong>Massive continuity upgrade</strong>
+                    <p>v0.6.0 introduces network and Git imports, release and stable workflows, clone-based sync loading, <code>dam apply --latest</code>, and richer project sharing through <code>dam.toml</code>.</p>
+                </div>
+                <h4>New: network and Git-powered import</h4>
+                <p><code>dam import</code> now accepts remote <code>.dam</code> URLs and Git repository URLs, automatically bootstrapping a local DAM reservoir from remote sources.</p>
+                <h4>New: release and stable workflows</h4>
+                <p>Named releases and stable labels allow you to share versioned snapshots and stream-ready releases independently from active stream history.</p>
+                <h4>New: project sharing via dam.toml</h4>
+                <p><code>dam export project</code> now supports sharing recommended branch and release/stable assignments, making it easier to export specific channels of work for collaborators.</p>
+                <h4>New: sync improvements</h4>
+                <p><code>dam sync --releases</code> synchronizes release metadata, while <code>dam sync --clone</code> loads a remote Git repo and converts it into DAM structure before syncing.</p>
+                <h4>New: apply latest</h4>
+                <p><code>dam apply --latest</code> restores the latest seal from the current stream, and <code>dam apply --latest-global</code> restores the latest seal across all streams.</p>
+
 
 <h3 id="whats-new-054">New: File Integrity Protection</h3>
 
@@ -1558,28 +1580,7 @@ Do you want to permanently suppress this warning? [Y/n]: y
 $ dam collect .
 ✓ Collection complete</code></pre>
 
-                <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 3rem 0;">
-                <h3 id="whats-new-061">v0.6.1</h3>
-                <div class="callout">
-                    <strong>Update System Bug Patch</strong>
-                    <p>v0.6.1 includes update related bug fixes and performance improvements across all features.</p>
-                </div>
-                <h3 id="whats-new-060">v0.6.0</h3>
-                <div class="callout">
-                    <strong>Massive continuity upgrade</strong>
-                    <p>v0.6.0 introduces network and Git imports, release and stable workflows, clone-based sync loading, <code>dam apply --latest</code>, and richer project sharing through <code>dam.toml</code>.</p>
-                </div>
-                <h4>New: network and Git-powered import</h4>
-                <p><code>dam import</code> now accepts remote <code>.dam</code> URLs and Git repository URLs, automatically bootstrapping a local DAM reservoir from remote sources.</p>
-                <h4>New: release and stable workflows</h4>
-                <p>Named releases and stable labels allow you to share versioned snapshots and stream-ready releases independently from active stream history.</p>
-                <h4>New: project sharing via dam.toml</h4>
-                <p><code>dam export project</code> now supports sharing recommended branch and release/stable assignments, making it easier to export specific channels of work for collaborators.</p>
-                <h4>New: sync improvements</h4>
-                <p><code>dam sync --releases</code> synchronizes release metadata, while <code>dam sync --clone</code> loads a remote Git repo and converts it into DAM structure before syncing.</p>
-                <h4>New: apply latest</h4>
-                <p><code>dam apply --latest</code> restores the latest seal from the current stream, and <code>dam apply --latest-global</code> restores the latest seal across all streams.</p>
-
+                
                 <h3 id="whats-new-050">v0.5.0</h3>
                 <div class="callout">
                     <strong>Headline features: Secure Credential Management</strong>
