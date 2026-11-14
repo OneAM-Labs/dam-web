@@ -1,139 +1,506 @@
-Core Concepts
-
-Introduction: What DAM is and how it differs from plain version control.
-
-Philosophy: The water-infrastructure naming model (Reservoir, Stream, Seal, Flow).
-
-Core Vocabulary: DAM's own terms and definitions, standalone — not mapped against any other VCS.
-
-.purities & .impurities: Allowlist/blocklist rule files that control which files get collected.
-
-Project Profiles (dam.toml): Per-project config defining providers, setup commands, and named export profiles — one file powering environment checks and setup instructions for project exports.
-
-GitHub Integration: How dam sync authenticates natively with GitHub branches using the secure credential system.
-
-Getting Started
-
-Quick Start: Source a reservoir, define purities, collect, seal, and safely sync to GitHub.
-
-Common Workflows: Recipes for starting a project, saving changes, branching safely, rolling back, syncing to GitHub, and sharing a project.
-
-FAQ: Answers on seal vs. project export, sync vs. export, credential storage, legacy migration, collection clearing, destroy safety, rule conflicts, and encryption.
-
-Command Reference
-
-dam source: Initialize or upgrade a reservoir (and trigger credential migration).
-
-dam collect: Scan files into the collection area per purities/impurities rules.
-
-dam creds: Securely manage aliases for GitHub tokens, SSH keys, or generic secrets using OS Keychain or encrypted local vaults.
-
-dam inspect: View reservoir state, rule maps, or .dam archive metadata.
-
-dam drain: Clear the collection area.
-
-dam seal: Create an immutable snapshot from the collection area.
-
-dam timeline: Print the chronological history of seals.
-
-dam stream: Create or list streams.
-
-dam flow: Switch the active stream.
-
-dam apply: Restore the workspace to a given seal, with --preview.
-
-dam sync: Push or pull seal history to/from GitHub. Automatically retrieves auth parameters from the centralized credential store.
-
-dam export: Package a seal or an entire project for sharing.
-
-Export a Seal: Share one historical snapshot as .seal or .zip.
-
-Export a Project: Package the whole current project, including setup commands and provider metadata, as a portable .dam archive.
-
-dam import: Import a .seal, .zip, or .dam archive back into a reservoir.
-
-dam settings: View or change reservoir configuration (Note: github_token_path is deprecated/removed in v0.5.0 in favor of dam creds).
-
-dam destroy: Permanently remove or safely archive a reservoir.
-
-Release Notes
-
-What's New: v0.5.0 introduces Centralized Secure Credential Management (dam creds) integrated with OS Keychain & AES-256-GCM encrypted local vaults. Includes automatic migration pipelines (dam source --upgrade) for legacy credentials and deprecates plain-text configuration variables.
-
-Downloads
-
-Installation: Linux (tar.gz via curl) and Windows (.zip via PowerShell or Command Prompt/curl) standalone binaries.
-
-Optional
-
-docs/index.html full reference: Single-page documentation containing all sections above with full command syntax, options, and examples.
-
-DAM
-
-DAM is a command-line Project Continuity Platform (PCP) — currently at v0.5.0, in Active Development (Alpha) — that uses its own independent vocabulary rather than Git's (e.g. "Reservoir", "Seal", "Stream", "Flow"; DAM is not a Git wrapper). It tracks, snapshots, and restores project state over time, packages an entire project — not just one snapshot — as a portable archive for handoff, and syncs a reservoir's history natively to and from GitHub branches.
-
-DAM is built for: saving checkpoints of in-progress work, branching off to try risky changes without losing working state, backing up and sharing history via stream-aware GitHub sync, merging divergent timelines safely, and packaging a clean, runnable copy of a project to send to another person or machine.
-
-Core Concepts
-
-Introduction: What DAM is and how it differs from plain version control.
-
-Philosophy: The water-infrastructure naming model (Reservoir, Stream, Seal, Flow).
-
-Core Vocabulary: DAM's own terms and definitions, standalone — not mapped against any other VCS.
-
-.purities & .impurities: Allowlist/blocklist rule files that control which files get collected.
-
-Project Profiles (dam.toml): Per-project config defining providers, setup commands, and named export profiles — one file powering environment checks and setup instructions for project exports.
-
-GitHub Integration: How dam sync maps local streams to remote branches, authenticates securely via credential manager aliases, and manages conflict resolutions.
-
-Getting Started
-
-Quick Start: Source a reservoir, define purities, collect, seal, and optionally sync to GitHub.
-
-Common Workflows: Recipes for starting a project, saving changes, branching safely, merging timelines, rolling back, syncing to GitHub, and sharing a project.
-
-FAQ: Answers on seal vs. project export, sync vs. export, 3-way merging, credential vaults, legacy migration, collection clearing, destroy safety, and encryption.
-
-Command Reference
-
-dam source: Initialize or upgrade a reservoir (auto-migrating legacy tokens).
-
-dam collect: Scan files into the collection area per purities/impurities rules.
-
-dam creds: Securely store, list, and delete credentials (GitHub tokens, SSH Keys, generic secrets) via OS Keychain or local encrypted vault.
-
-dam inspect: View reservoir state, rule maps, or .dam archive metadata.
-
-dam drain: Clear the collection area.
-
-dam seal: Create an immutable snapshot from the collection area.
-
-dam timeline: Print chronological history of seals or render the ASCII DAG visualizer (--graph).
-
-dam stream: Manage streams with rich continuity metadata, goals, notes, and subcommands (create, inspect, goal, notes, delete).
-
-dam flowinto: Switch the active stream context, with auto-snapshotting for unsealed staged changes.
-
-dam merge: [Experimental] Perform a smart 3-way merge between parallel development streams and apply the results into a multi-parent seal.
-
-dam apply: Restore the workspace to a given seal, with --preview.
-
-dam sync: Stream-aware push/pull sync to a cloud platform. Maps streams 1:1 with branch heads, protects the main stream, and resolves interactive ahead/behind diffs using stored credential aliases.
-
-dam export: Package a seal or an entire project for sharing.
-
-Export a Seal: Share one historical snapshot as .seal or .zip.
-
-Export a Project: Package the whole current project, including setup commands and provider metadata, as a portable .dam archive.
-
-dam import: Import a .seal, .zip, or .dam archive back into a reservoir.
-
-dam settings: View or change reservoir configuration, including rule-conflict resolution and local parameters. (Note: github_token_path has been deprecated in favor of the credentials suite).
-
-dam destroy: Permanently remove or safely archive a reservoir.
-
-Release Notes
-
-What's New: v0.5.0 introduces secure credential management (dam creds) via OS Keychain and AES-256-GCM local vaults (PBKDF2-SHA256, 100,000 iterations). Supports fine-grained tokens, classic tokens, SSH keys, and generic secrets. Delivers a safe migration pipeline via dam source --upgrade to clean legacy plaintext credentials.
+DAM — Project Continuity Platform v0.6.3
+
+DAM is a CLI-based Project Continuity Platform (PCP) written in Rust. Unlike Git, DAM uses its own independent vocabulary (Reservoir, Stream, Seal, Flow) and architecture, though it fully interoperates with Git. DAM tracks, snapshots, and restores project state; packages projects with setup automation; manages releases and stable versions independently; and syncs via GitHub branches natively.
+
+CORE VOCABULARY & PHILOSOPHY
+
+Reservoir: The hidden `.dam` directory containing all project history, configuration, streams, seals, releases, stable versions, and the immutable object store.
+
+Stream: A parallel development timeline (like a branch) that holds its own sequence of seals. Projects can have many streams; one is active at any time.
+
+Seal: An immutable, named snapshot of all files in the collection area. Equivalent to a Git commit. Contains hash, timestamp, message, and file manifest.
+
+Timeline: The chronological history of seals on a specific stream, displayed as a linear log or ASCII DAG with --graph.
+
+Flowinto: Switch the active workspace to a different stream. If unsealed files exist, DAM offers to auto-seal them first.
+
+Collection: The staging area where files are held after being scanned by `dam collect`. Files in the collection are ready to be sealed.
+
+Purity/Impurity Rules: `.purities` files define allowlists (what may be collected); `.impurities` define blocklists (what must be excluded). Conflicts resolved deterministically.
+
+Release: A named, distributable version snapshot (e.g., v1.0.0, v2.1.3-beta) with optional tags and description. Global to the reservoir, not stream-scoped.
+
+Stable: A stream-scoped version marker used to denote long-lived or release-ready branches (e.g., marking a development stream as v1.0.0-stable).
+
+Provider: A project-type profile (Flutter, Python, Custom) that defines environment checks and setup commands for exports.
+
+Export/Import: Package a seal or entire project as a portable `.dam`, `.seal`, or `.zip` archive. Import from local paths, HTTP/HTTPS URLs, or Git repositories.
+
+Sync: Push/pull seal history and file objects to/from GitHub. Streams map 1:1 to branch heads.
+
+COMMAND REFERENCE (v0.6.3)
+
+dam source [OPTIONS]
+  Initialize or upgrade a reservoir in the current directory.
+  Options:
+    -n, --name <NAME>         Project name (non-interactive)
+    --profile <PROFILE>       Initialize with a provider profile (flutter, custom)
+    --upgrade                 Upgrade the current reservoir to latest format
+  Examples:
+    dam source
+    dam source -n "My App"
+    dam source --profile flutter
+    dam source --upgrade
+
+dam inspect [OPTIONS] [TARGET]
+  View reservoir state, active stream, staged files, or rule maps.
+  Options:
+    --rules                   Display all .purities and .impurities files in the tree
+    [TARGET]                  Optional path to a .dam archive to inspect
+  Examples:
+    dam inspect
+    dam inspect --rules
+    dam inspect shared-app.dam
+
+dam drain <TARGET>
+  Clear a section of the reservoir (e.g., staging area).
+  Arguments:
+    <TARGET>                  Section to drain (e.g., "collection")
+  Examples:
+    dam drain collection
+
+dam destroy [OPTIONS]
+  Permanently delete the local `.dam` directory.
+  Options:
+    -a, --archive             Backup the .dam directory before deletion
+  Examples:
+    dam destroy
+    dam destroy --archive
+
+dam collect <PATH> [OPTIONS]
+  Scan and stage files into the collection area using purity/impurity rules.
+  Arguments:
+    <PATH>                    Directory or file to scan
+  Options:
+    --override-purities [FILE]     Ignore allowlists or read from specific file
+    --override-impurities [FILE]   Ignore blocklists or read from specific file
+    --rule-priority <PRIORITY>     'purities' or 'impurities' (conflict resolution)
+  Examples:
+    dam collect .
+    dam collect src/
+    dam collect . --rule-priority purities
+    dam collect . --override-impurities
+
+dam seal [MESSAGE] [OPTIONS]
+  Create an immutable snapshot from the collection area.
+  Arguments:
+    [MESSAGE]                 Descriptive commit message
+  Options:
+    -l, --list <N>            List the last N seals instead of creating one
+  Examples:
+    dam seal "Added user authentication"
+    dam seal --list 5
+    dam seal "Release v1.0.0"
+
+dam timeline [OPTIONS]
+  Print chronological seal history on the current stream.
+  Options:
+    -g, --graph               Display as ASCII DAG (topological graph)
+  Examples:
+    dam timeline
+    dam timeline --graph
+
+dam stream [SUBCOMMAND] [OPTIONS]
+  Manage development streams (branches).
+  Subcommands:
+    create <NAME>            Create a new stream
+      --from <STREAM>        Branch from a specific stream (defaults to current)
+      -d, --description TEXT Add a description
+      -o, --owner TEXT       Set the stream owner
+      -p, --priority TEXT    Set priority level
+      --target TEXT          Set target branch for sync
+    inspect [NAME]           View stream metadata and history
+    delete <NAME>            Remove a stream
+    goal <NAME> [TEXT]       Set or clear a stream goal
+      --clear                Remove goal
+    notes <NAME> [TEXT]      Add or clear stream notes
+      --clear                Remove notes
+    description <NAME> [TEXT] Set or clear stream description
+      --clear                Remove description
+    target <NAME> [TEXT]     Set or clear target branch
+      --clear                Remove target
+  Examples:
+    dam stream
+    dam stream create feature-login
+    dam stream inspect feature-login
+    dam stream goal feature-login "Complete login UI"
+    dam stream notes feature-login "Using Firebase Auth"
+    dam stream delete old-feature
+
+dam flowinto <NAME>
+  Switch the active workspace to a different stream.
+  Arguments:
+    <NAME>                   Target stream name
+  Examples:
+    dam flowinto feature-login
+    dam flowinto main
+
+dam apply [OPTIONS] [SEAL_ID]
+  Restore workspace files to match a historical seal.
+  Arguments:
+    [SEAL_ID]                Seal ID to apply (optional with --latest flags)
+  Options:
+    -p, --preview            Show what would change without modifying files
+    --latest                 Apply the latest seal from the current stream
+    --latest-global          Apply the latest seal across all streams
+  Examples:
+    dam apply seal_001
+    dam apply --latest
+    dam apply --latest-global
+    dam apply seal_001 --preview
+
+dam merge [OPTIONS] [SOURCE]
+  Merge another stream's seals into the current stream (experimental).
+  Arguments:
+    [SOURCE]                 Source stream name
+  Options:
+    --apply                  Apply merge results to the workspace
+  Examples:
+    dam merge feature-login
+    dam merge feature-login --apply
+
+dam creds [SUBCOMMAND]
+  Securely manage credentials (GitHub tokens, SSH keys, secrets).
+  Subcommands:
+    create [OPTIONS]         Store a new credential
+      --alias <ALIAS>        Credential name (e.g., github_token)
+      --vault                Use local encrypted vault instead of OS Keychain
+    list [OPTIONS]           List all known credential aliases
+      --vault                List only vault credentials
+    delete <ALIAS> [OPTIONS] Remove a credential by alias
+      --vault                Delete from vault
+  Examples:
+    dam creds create --alias github_token
+    dam creds create --vault
+    dam creds list
+    dam creds delete github_token
+
+dam sync [OPTIONS]
+  Push or pull seal history to/from GitHub.
+  Options:
+    --action <ACTION>        'push' or 'pull' (default: push)
+    --releases               Sync releases instead of stream seals
+    --platform <PLATFORM>    Cloud provider (default: github)
+    -f, --force              Force sync without confirmation
+  Examples:
+    dam sync
+    dam sync --action pull
+    dam sync --releases
+    dam sync --platform github
+
+dam pr [SUBCOMMAND]
+  Manage pull requests on the remote repository.
+  Subcommands:
+    list                     List open pull requests
+    checkout <NUMBER>        Check out PR into a new stream (e.g., pr-19)
+  Examples:
+    dam pr list
+    dam pr checkout 19
+
+dam releases [SUBCOMMAND]
+  Manage releases (named, distributable versions).
+  Subcommands:
+    create <NAME> [OPTIONS]  Create a new release
+      --stream <STREAM>      Source stream (defaults to current)
+      --description TEXT     Release description
+      --tags <TAGS>          Comma-separated tags (e.g., stable,production)
+      --latest               Mark as latest release pointer
+    list                     List all releases
+    inspect [NAME] [OPTIONS] View release details
+      --latest               Inspect the latest release
+    delete <NAME>            Remove a release
+  Examples:
+    dam releases create v1.0.0
+    dam releases create v1.0.0 --latest
+    dam releases create v1.0.0 --tags stable,production
+    dam releases list
+    dam releases inspect v1.0.0
+    dam releases inspect --latest
+    dam releases delete v0.9.0
+
+dam stable [SUBCOMMAND]
+  Manage stable versions (stream-scoped version markers).
+  Subcommands:
+    assign <VERSION> [OPTIONS]  Assign a stable version to a stream
+      --stream <STREAM>       Target stream (defaults to current)
+      --description TEXT      Stable version description
+      --latest                Mark as latest for the stream
+    list                     List all stable version assignments
+    inspect [VERSION] [OPTIONS] View stable version details
+      --latest                Inspect latest for current stream
+    remove <VERSION>         Remove a stable version assignment
+  Examples:
+    dam stable assign v1.0.0
+    dam stable assign v1.0.0 --latest
+    dam stable assign v1.0.0-beta1 --stream develop
+    dam stable list
+    dam stable inspect v1.0.0
+    dam stable inspect --latest
+    dam stable remove v0.9.0
+
+dam export <SUBCOMMAND>
+  Package a seal or entire project for sharing.
+  Subcommands:
+    seal <SEAL_ID> [OPTIONS]    Export a specific historical seal
+      --zip                   Export as .zip instead of .seal (tar.gz)
+    project <NAME> [OPTIONS]    Export the current project as a .dam archive
+      --profile <PROFILE>     Export profile (full, contributor, etc.)
+  Examples:
+    dam export seal seal_001
+    dam export seal seal_001 --zip
+    dam export project my-app
+    dam export project my-app --profile contributor
+
+dam import <SOURCE> [OPTIONS]
+  Import a seal, archive, or Git repository.
+  Arguments:
+    <SOURCE>                 Local path, .dam/.seal/.zip file, or Git URL
+  Options:
+    --merge                  Merge into current project (not default behavior)
+    --branch <BRANCH>        Git branch to clone (for Git imports)
+  Examples:
+    dam import shared-app.dam
+    dam import https://example.com/releases/my-app.dam
+    dam import https://github.com/user/project.git
+    dam import git@github.com:user/project.git --branch develop
+    dam import /path/to/project --merge
+    dam import exported_seal.seal
+
+dam update
+  Check for and install CLI updates.
+  Examples:
+    dam update
+
+dam settings [OPTIONS]
+  View or modify reservoir configuration.
+  Options:
+    --show                   Display current settings
+    --set <KEY> <VALUE>      Update a setting
+  Examples:
+    dam settings --show
+    dam settings --set conflict_resolution purities
+
+WORKFLOW EXAMPLES
+
+Quick Start (Seal & Sync):
+  1. dam source -n "my-project"
+  2. dam collect .
+  3. dam seal "Initial commit"
+  4. dam sync --action push
+
+Feature Branch with Stable:
+  1. dam stream create feature-x
+  2. dam flowinto feature-x
+  3. dam collect src/
+  4. dam seal "Feature complete"
+  5. dam stable assign v1.1.0-beta1 --stream feature-x
+  6. dam flowinto main
+  7. dam merge feature-x --apply
+
+Release Management:
+  1. dam releases create v1.0.0 --tags stable --latest
+  2. dam stable assign v1.0.0 --stream main --latest
+  3. dam sync --releases
+  4. dam export project my-app --profile contributor
+
+Clone & Merge External Project:
+  1. dam import https://github.com/user/library.git --merge
+  2. dam collect .
+  3. dam seal "Integrated external library"
+
+Restore to Previous Seal:
+  1. dam timeline
+  2. dam apply seal_005 --preview
+  3. dam apply seal_005
+
+PROJECT CONFIGURATION (dam.toml)
+
+dam.toml defines project metadata, setup automation, export profiles, and pre-assigned releases/stable versions:
+
+[project]
+name = "my-flutter-app"          # Project name
+provider = "flutter"              # Provider type (flutter, python, custom)
+enforce_password_on_project_import = false  # Encrypt exports
+
+[setup]
+commands = [                      # Automatic setup commands on import
+  "flutter pub get",
+  "flutter clean"
+]
+
+[profiles.full]                   # Export profile: full admin access
+description = "Full Admin Access"
+include = ["**/*"]                # Include all files
+exclude = [".git/**", "build/**"] # Except these patterns
+
+[profiles.contributor]            # Export profile: contributor access
+description = "Contributor Access"
+include = ["**/*"]
+exclude = [".git/**", "**/*.env", "**/*.key"]
+
+streams = ["main", "develop"]     # Pre-assigned streams for exports
+releases = ["v1.0.0", "v1.1.0"]   # Pre-assigned releases
+stable = ["v1.0.0-stable"]        # Pre-assigned stable versions
+
+CREDENTIAL STORAGE
+
+Credentials are stored securely via:
+
+OS Keychain (default):
+  - macOS: Keychain
+  - Linux: Secret Service / Pass
+  - Windows: Credential Manager
+
+Local Encrypted Vault:
+  - AES-256-GCM encryption
+  - PBKDF2-SHA256 derivation (100,000 iterations)
+  - Stored in `.dam/vault.bin`
+  - Use --vault flag to force local storage
+
+CREATE CREDENTIAL FLOW:
+
+  dam creds create --alias github_token
+  # Prompts for credential type (token, ssh key, generic secret)
+  # Stores in OS Keychain by default
+  # Use --vault to encrypt locally instead
+
+RULE ENGINE CONFLICTS
+
+If a file matches both .purities and .impurities:
+
+Default Behavior:  Check config.toml for rule_priority setting
+Override:          --rule-priority purities  (collect) or impurities (drop)
+
+Example:
+  dam collect . --rule-priority purities  # Purities win all conflicts
+
+EXPORT PROFILE SYSTEM
+
+Export profiles control what files and metadata are included in .dam exports:
+
+full:         All files, all metadata, all setup commands
+contributor:  All files except .env, secrets, keys
+viewer:       Documentation and public-facing files only
+
+Custom profiles can be defined in dam.toml and used:
+  dam export project my-app --profile viewer
+
+GIT INTEROPERABILITY
+
+DAM streams map 1:1 to Git branches:
+  dam stream create feature-x       # Local stream
+  dam sync --action push             # Pushes to refs/heads/feature-x on GitHub
+
+Pull requests are integrated:
+  dam pr list                        # List GitHub PRs
+  dam pr checkout 42                 # Checks out PR #42 into stream pr-42
+
+Clone Git repositories directly:
+  dam import https://github.com/user/repo.git
+  dam import git@github.com:user/repo.git --branch main
+
+NETWORK OPERATIONS
+
+Import from HTTP/HTTPS:
+  dam import https://example.com/releases/app.dam
+  dam import https://github.com/user/project/archive/main.zip
+
+Sync to GitHub:
+  dam sync --action push              # Push seals
+  dam sync --action pull              # Pull seals
+  dam sync --releases                 # Sync releases
+
+SAFETY FEATURES
+
+Overwrite Protection:
+  - dam apply checks if workspace files differ from target seal
+  - Prompts before overwriting modified files
+  - Can be disabled in config.toml
+
+Unsealed File Warnings:
+  - flowinto prompts to auto-seal if collection is non-empty
+  - pr checkout offers auto-seal before checking out
+
+Merge Conflicts:
+  - 3-way merge detects conflicts
+  - Requires explicit --apply to write changes
+
+COMMON USE CASES
+
+Use Case: Backup & Restore
+  dam collect . && dam seal "Backup $(date)"
+  dam timeline --graph
+  dam apply seal_003
+
+Use Case: Feature Development
+  dam stream create awesome-feature
+  dam flowinto awesome-feature
+  # ... make changes ...
+  dam collect . && dam seal "Feature complete"
+  dam flowinto main
+  dam merge awesome-feature --apply
+
+Use Case: Release Management
+  dam releases create v1.0.0 --tags stable
+  dam stable assign v1.0.0 --stream main --latest
+  dam export project my-app --profile contributor
+  dam sync --releases
+
+Use Case: Project Handoff
+  dam export project team-project --profile contributor
+  # Share team-project.dam with team
+  # Team: dam import team-project.dam
+
+Use Case: Clone & Contribute
+  dam import https://github.com/org/project.git
+  dam stream create my-bugfix
+  dam flowinto my-bugfix
+  # ... make changes ...
+  dam collect . && dam seal "Fixed bug #123"
+  dam sync --action push
+
+TROUBLESHOOTING
+
+Problem: "No seals found in the current stream"
+  Solution: dam seal "Initial commit"
+
+Problem: Files not being collected
+  Solution: dam inspect --rules (verify .purities are correct)
+
+Problem: Sync authentication fails
+  Solution: dam creds create --alias github_token (re-enter credentials)
+
+Problem: Overwrite conflict during apply
+  Solution: dam apply seal_001 --preview (see changes first)
+
+Problem: Can't merge streams
+  Solution: dam merge source-stream --apply (merge is experimental; use with caution)
+
+RELEASE NOTES (v0.6.3)
+
+Major Additions:
+- Releases: Named, distributable version snapshots independent of stream history
+- Stable Versions: Stream-scoped version markers for long-lived branches
+- apply --latest flags: Quickly apply the latest seal without memorizing IDs
+- import --merge: Merge external repositories or cloned projects into current workspace
+- Git Clone Support: Import directly from Git URLs (with --branch support)
+- Network Imports: Download .dam archives over HTTP/HTTPS
+- Enhanced Project Exports: dam.toml now supports pre-assigned releases and stable versions
+- Sync Releases: dam sync --releases intelligently syncs releases to GitHub
+
+Improvements:
+- Better hash caching in apply for faster large-repo restores
+- Improved project.rs with profile-based export configuration
+- Enhanced GitHub provider with release sync support
+- Updated stable.rs and releases.rs with full CRUD operations
+- Better error handling and user feedback throughout
+
+Deprecated:
+- None (all v0.5.0 features remain functional)
+
+Installation:
+  From Source: git clone <repo> && cargo install --path .
+  From AUR:    yay -S dam || paru -S dam
+  Verify:      dam update
+
+---
